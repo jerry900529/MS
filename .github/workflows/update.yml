@@ -1,0 +1,46 @@
+name: Update data & deploy
+
+on:
+  schedule:
+    - cron: '30 17 * * *'   # 每天 01:30（台灣時間）；官方資料每日更新
+  workflow_dispatch:          # 可在 Actions 頁面手動執行
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch character data
+        if: github.event_name != 'push'
+        env:
+          NEXON_API_KEY: ${{ secrets.NEXON_API_KEY }}
+        run: node fetch-data.js
+      - name: Commit updated data
+        if: github.event_name != 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data
+          git diff --cached --quiet || git commit -m "chore: update character data"
+          git push
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+      - uses: actions/deploy-pages@v4

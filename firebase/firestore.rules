@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /passwords/{p} {
+      allow read, write: if false;
+    }
+
+    match /members/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['pass'])
+        && request.resource.data.pass is string
+        && exists(/databases/$(database)/documents/passwords/$(request.resource.data.pass));
+      allow update, delete: if false;
+    }
+
+    match /items/{itemId} {
+      allow read: if true;
+      allow create, update: if request.auth != null
+        && exists(/databases/$(database)/documents/members/$(request.auth.uid))
+        && itemId in ['life-grindstone', 'dark-box', 'life-box', 'white-jade-box', 'faith-grindstone', 'eternal-box']
+        && request.resource.data.keys().hasOnly(['next'])
+        && request.resource.data.next is int
+        && request.resource.data.next >= 0
+        && request.resource.data.next < 3;
+      allow delete: if false;
+    }
+  }
+}

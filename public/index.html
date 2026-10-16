@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>花心傑睿 | TMS 新楓之谷</title>
+<link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+:root{--bg:#f6f1ea;--bg2:#fffaf2;--card:#ffffff;--ink:#2e2418;--mute:#86745f;--accent:#f08a24;--accent2:#e5533d;--hl:#e5533d;--on-accent:#fff;--line:#eadcc6;--shadow:0 6px 20px #6b4a1f14;
+--chart:#d4501f;--grid:#eadfce;--axis:#86745f;--star:#f2a60c;
+--g-rare:#3b9bd9;--g-epic:#a05ad6;--g-uniq:#eba90f;--g-leg:#27b866;
+--hero-bg:linear-gradient(120deg,#ff9d2e,#e5533d 60%,#b83a62);--hero-ink:#fff;--deco:none;--emblem:none;--hero-clip:none;
+--bar:#2e2418;--bar-ink:#f6ead8;--r:16px;--r2:12px;--font:system-ui,"Noto Sans TC","PingFang TC",sans-serif;--font-head:var(--font);--head-ls:.04em;--h1-shadow:0 2px 12px #0003;--h1-case:none}
+*{box-sizing:border-box}html{scroll-behavior:smooth;font-size:112.5%;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.65 var(--font);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+b{font-weight:650}
+
+/* topbar：角色切換 */
+.topbar{background:var(--bar);color:var(--bar-ink);font-size:.85rem}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:8px;padding-bottom:8px}
+.topbar .brand{opacity:.8;letter-spacing:.14em;font-size:.75rem}
+.topbar .spacer{flex:1}.topbar .toplink{color:inherit;text-decoration:none;font-weight:650;padding:6px 14px;border:1px solid #ffffff33;border-radius:var(--r2)}.topbar .toplink:hover{border-color:var(--accent);color:var(--accent)}
+.topbar label{display:flex;align-items:center;gap:8px}
+.topbar select{background:#ffffff14;color:inherit;border:1px solid #ffffff33;border-radius:var(--r2);padding:6px 30px 6px 12px;font:inherit;font-weight:650;cursor:pointer;appearance:none;
+ background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 16px) 55%,calc(100% - 11px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.topbar select option{background:#1b1b1b;color:#fff}
+
+/* hero */
+.hero{position:relative;color:var(--hero-ink);overflow:hidden;background:var(--hero-bg);clip-path:var(--hero-clip)}
+.hero:before{content:"";position:absolute;inset:0;background:var(--emblem) right 5% center/min(300px,48vw) no-repeat,var(--deco);pointer-events:none}
+.hero .wrap{position:relative;display:flex;gap:32px;align-items:center;flex-wrap:wrap;padding-top:40px;padding-bottom:44px}
+.avatar{width:170px;height:170px;border-radius:var(--r);background:#ffffff26;backdrop-filter:blur(6px);display:grid;place-items:center;font-size:64px;box-shadow:0 10px 30px #0004;border:2px solid #ffffff55}
+.avatar img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}
+.hero h1{margin:0;font-family:var(--font-head);font-size:clamp(2.1rem,6vw,3.2rem);letter-spacing:var(--head-ls);text-shadow:var(--h1-shadow);text-transform:var(--h1-case)}
+.hero .sub{margin:.2rem 0 .6rem;font-size:1.05rem;opacity:.96}
+.chips span{display:inline-block;background:#ffffff26;border:1px solid #ffffff40;border-radius:99px;padding:2px 13px;margin:5px 6px 0 0;font-size:.82rem}
+.exp{height:12px;border-radius:99px;background:#00000040;margin-top:14px;max-width:420px;overflow:hidden}
+.exp i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.hero .cp{margin-left:auto;text-align:center;background:#00000033;border:1px solid #ffffff3a;border-radius:var(--r);padding:14px 26px;backdrop-filter:blur(4px)}
+.cp small{display:block;opacity:.85;letter-spacing:.2em}.cp b{font-size:clamp(1.6rem,4vw,2.3rem);font-variant-numeric:tabular-nums}
+
+/* tabs */
+.tabs{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+.tabs button{flex:none;border:0;background:none;color:var(--mute);font:inherit;font-weight:600;padding:8px 16px;border-radius:var(--r2);cursor:pointer}
+.tabs button:hover{color:var(--ink)}.tabs button.on{background:var(--accent);color:var(--on-accent)}
+.panel{display:none;padding:24px 0 40px}.panel.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+
+/* blocks */
+h2{font-family:var(--font-head);letter-spacing:var(--head-ls);font-size:1.1rem;margin:28px 0 12px;display:flex;align-items:center;gap:8px}h2:first-child{margin-top:0}
+h2:before{content:"";width:5px;height:1.1em;border-radius:3px;background:linear-gradient(var(--accent),var(--accent2))}
+h2 small{font-weight:400;color:var(--mute);font-size:.8rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);transition:border-color .2s}
+.card:hover{border-color:color-mix(in srgb,var(--accent) 50%,var(--line))}
+.stat small{display:block;color:var(--mute);font-size:.78rem}.stat b{font-size:1.25rem;font-variant-numeric:tabular-nums}
+.stat.hl b{color:var(--hl)}
+.card h3{margin:0 0 8px;font-size:1rem}
+.list{list-style:none;margin:0;padding:0}.list li{padding:6px 0;border-bottom:1px dashed var(--line);font-size:.9rem}.list li:last-child{border:0}
+.mute{color:var(--mute)}.tag{display:inline-block;font-size:.72rem;border-radius:6px;padding:0 7px;background:var(--bg);border:1px solid var(--line);color:var(--mute);margin-left:4px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:var(--r2);padding:6px 16px;cursor:pointer;font:inherit;font-size:.88rem}
+.btn.on,.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.g-稀有{--gc:var(--g-rare)}.g-罕見{--gc:var(--g-epic)}.g-特殊{--gc:var(--g-uniq)}.g-傳說{--gc:var(--g-leg)}
+.gt-稀有{color:var(--g-rare)}.gt-罕見{color:var(--g-epic)}.gt-特殊{color:var(--g-uniq)}.gt-傳說{color:var(--g-leg)}
+
+/* equipment */
+.eqs{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+.slot{background:var(--card);border:2px solid var(--gc,var(--line));border-radius:var(--r2);padding:6px 2px 4px;text-align:center;font:inherit;font-size:.66rem;color:var(--mute);cursor:pointer}
+.slot:hover{transform:translateY(-2px)}.slot img{width:38px;height:38px;image-rendering:pixelated;display:block;margin:0 auto}
+.slot .st{color:var(--star);font-weight:700}
+.ec{display:flex;gap:12px;border-left:4px solid var(--gc,var(--line))}.ec>img{width:46px;height:46px;image-rendering:pixelated;flex:none}
+.ec h4{margin:0;font-size:.98rem}.ec p{margin:2px 0;font-size:.8rem}.ec .k{color:var(--mute)}.ec .star{color:var(--star);font-weight:700}
+.ec.flash{animation:fl 1.2s}@keyframes fl{30%{box-shadow:0 0 0 4px var(--accent)}}
+.icons{display:flex;flex-wrap:wrap;gap:8px}.icons figure{margin:0;width:78px;text-align:center;font-size:.68rem;color:var(--mute)}
+.icons img{width:40px;height:40px;image-rendering:pixelated;display:block;margin:0 auto 2px}.icons figure{line-height:1.3}
+#raider,#blocks,#occupied{columns:2 200px;column-gap:20px}#raider li,#blocks li,#occupied li{break-inside:avoid}
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.sk{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:10px 12px}
+.sk img{width:34px;height:34px;image-rendering:pixelated}.sk b{font-size:.9rem}.sk .lv{color:var(--hl);font-weight:700;margin-left:4px;font-size:.82rem}
+.sk p{margin:2px 0 0;font-size:.74rem;color:var(--mute);white-space:pre-line;max-height:3.4em;overflow:hidden}.sk:hover p{max-height:none}
+.bar{height:8px;border-radius:99px;background:var(--bg);border:1px solid var(--line);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.mat{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.core{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:8px 10px;font-size:.82rem}.core b{display:block}.core .lv{color:var(--hl)}
+.ci{display:flex;gap:4px;margin-bottom:6px;flex-wrap:wrap}.ci img,.ci i{width:30px;height:30px;border-radius:7px;image-rendering:pixelated;background:var(--bg);border:1px solid var(--line)}
+.ci i{display:grid;place-items:center;font-style:normal;font-size:.8rem;color:var(--mute)}
+table{width:100%;border-collapse:collapse;font-size:.88rem}td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--mute);font-weight:600}
+
+.note{color:var(--mute);font-size:.82rem}.err{display:block;background:#e5533d1a;border:1px dashed var(--accent2);border-radius:12px;padding:12px 16px;margin:16px 0}
+footer{text-align:center;color:var(--mute);font-size:.78rem;padding:28px 0 40px}
+
+/* growth charts */
+.gc{position:relative}.gc svg{display:block;width:100%;height:auto;overflow:visible}
+.gc .gl{stroke:var(--grid);stroke-width:1}.gc text{fill:var(--axis);font-size:13.5px;font-family:inherit}
+.gc .ln{fill:none;stroke:var(--chart);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.gc .ar{fill:var(--chart);opacity:.1}.gc .bar{fill:var(--chart)}.gc .bar.hv{opacity:.75}
+.gc .dot{fill:var(--chart);stroke:var(--card);stroke-width:2}.gc .xh{stroke:var(--axis);stroke-width:1}
+.gc .lab{fill:var(--ink);font-size:15px;font-weight:650}
+.tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:var(--r2);padding:8px 10px;font-size:.78rem;box-shadow:var(--shadow);white-space:nowrap;z-index:3;display:none}
+.tip b{display:block;font-size:.95rem}.tip .k{display:inline-block;width:14px;height:0;border-top:2px solid var(--chart);vertical-align:middle;margin-right:6px}
+.tip span.m{color:var(--mute)}
+.gh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px}.gh h3{margin:0}
+
+/* ===== 職業主題：每個角色依職業套用自己的視覺 ===== */
+/* 夜使者：暗影・霓虹・手裏劍 */
+[data-theme=nightlord]{--bg:#070a12;--bg2:#0c1120;--card:#101726;--ink:#e6edf7;--mute:#8592ab;--accent:#4de1ff;--accent2:#8b5cf6;--hl:#7ef0ff;--on-accent:#04141c;--line:#1c2842;--shadow:0 10px 30px #000a;
+--chart:#4de1ff;--grid:#1a2338;--axis:#8592ab;--star:#ffd45e;--bar:#04060b;--bar-ink:#9fb2d4;
+--hero-bg:linear-gradient(115deg,#04060b 0%,#0d1430 55%,#241758 100%);
+--deco:repeating-linear-gradient(115deg,transparent 0 46px,#4de1ff0f 46px 47px),radial-gradient(620px 260px at 85% 15%,#8b5cf63a,transparent 70%);
+--emblem:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22 fill=%22none%22%3E%3Cg transform=%22rotate(14 100 100)%22%3E%3Cpath fill-rule=%22evenodd%22 fill=%22%234de1ff%22 fill-opacity=%220.16%22 d=%22M100 6L125 75 194 100 125 125 100 194 75 125 6 100 75 75ZM100 86a14 14 0 1 0 .1 0Z%22/%3E%3C/g%3E%3C/svg%3E");--r:6px;--r2:4px;--head-ls:.14em;--h1-shadow:0 0 22px #4de1ff80;--h1-case:uppercase}
+[data-theme=nightlord] .card{box-shadow:0 0 0 1px #0000,0 10px 30px #000a,inset 0 1px 0 #ffffff08}
+[data-theme=nightlord] .card:hover{box-shadow:0 0 18px #4de1ff26,0 10px 30px #000a}
+[data-theme=nightlord] h2:before{box-shadow:0 0 10px var(--accent)}
+/* 破風使者：清風・蒼空・輕盈 */
+[data-theme=windarcher]{--bg:#eef9f6;--bg2:#ffffff;--card:#ffffff;--ink:#17383a;--mute:#5f8584;--accent:#12a594;--accent2:#3b9be0;--hl:#0e8f86;--on-accent:#fff;--line:#cdebe4;--shadow:0 10px 28px #17a08c22;
+--chart:#0e8f86;--grid:#d6ece6;--axis:#5f8584;--star:#f0a20b;--bar:#0b7a70;--bar-ink:#e7fbf6;
+--hero-bg:linear-gradient(120deg,#0e9f8b 0%,#35b8c9 55%,#5aa8f0 100%);
+--deco:radial-gradient(280px 120px at 15% 112%,#ffffff55,transparent 70%),radial-gradient(240px 100px at 62% -10%,#ffffff44,transparent 70%),radial-gradient(200px 90px at 96% 75%,#ffffff33,transparent 70%);
+--emblem:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22 fill=%22none%22%3E%3Cg stroke=%22%23ffffff%22 stroke-opacity=%220.38%22 stroke-width=%227%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M14 70C64 38 118 40 150 62C176 80 160 108 136 100%22/%3E%3Cpath d=%22M6 112C58 86 110 92 142 112C168 128 152 152 128 146%22/%3E%3Cpath d=%22M38 152C80 136 120 142 142 158%22/%3E%3C/g%3E%3C/svg%3E");--r:22px;--r2:16px;--head-ls:.03em;--h1-shadow:0 2px 14px #0b6f6a66;--hero-clip:none}
+[data-theme=windarcher] .hero{border-radius:0 0 40px 40px}
+[data-theme=windarcher] .avatar{border-radius:50%}
+/* 暗影神偷：鎏金・猩紅・紳士盜賊 */
+[data-theme=shadower]{--bg:#0f0b0a;--bg2:#16100e;--card:#1a1412;--ink:#f1e6d3;--mute:#a1907a;--accent:#d9a441;--accent2:#b3202a;--hl:#f0c46a;--on-accent:#1a1208;--line:#372b22;--shadow:0 10px 28px #000b;
+--chart:#e0b04a;--grid:#2a211b;--axis:#a1907a;--star:#ffd36b;--bar:#070504;--bar-ink:#c9b38f;
+--hero-bg:linear-gradient(110deg,#080605 0%,#2b0f12 60%,#52141a 100%);
+--deco:repeating-linear-gradient(45deg,transparent 0 24px,#d9a4410f 24px 25px),repeating-linear-gradient(-45deg,transparent 0 24px,#d9a4410f 24px 25px);
+--emblem:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22 fill=%22none%22%3E%3Cg stroke=%22%23d9a441%22 stroke-opacity=%220.35%22 stroke-width=%224%22%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%2286%22/%3E%3Cpath d=%22M100 22L178 100 100 178 22 100Z%22/%3E%3Ccircle cx=%22100%22 cy=%22100%22 r=%2222%22/%3E%3C/g%3E%3C/svg%3E");--r:3px;--r2:3px;--head-ls:.1em;--font-head:"Noto Serif TC","Source Han Serif TC","Songti TC","PMingLiU",serif;--h1-shadow:0 2px 0 #000,0 0 26px #d9a44144}
+[data-theme=shadower] .hero{border-bottom:3px double #d9a44188}
+[data-theme=shadower] .card{border-top:2px solid color-mix(in srgb,var(--accent) 55%,var(--line))}
+[data-theme=shadower] .avatar{border:2px solid #d9a441aa;box-shadow:0 0 0 4px #00000066,0 10px 30px #000}
+/* 惡魔復仇者：血紅・烈焰・爪痕 */
+[data-theme=demonavenger]{--bg:#0a0507;--bg2:#12090c;--card:#170c10;--ink:#f4e4e6;--mute:#a58a90;--accent:#ff3b4f;--accent2:#ff8a3d;--hl:#ff6b78;--on-accent:#fff;--line:#331a20;--shadow:0 10px 30px #000c;
+--chart:#ff5566;--grid:#2a1519;--axis:#a58a90;--star:#ffb347;--bar:#060203;--bar-ink:#d3a5ac;
+--hero-bg:linear-gradient(120deg,#080406 0%,#3a0a14 55%,#7d1022 100%);
+--deco:radial-gradient(520px 220px at 90% 105%,#ff3b4f66,transparent 70%),radial-gradient(260px 120px at 8% -10%,#ff8a3d2a,transparent 70%);
+--emblem:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22 fill=%22none%22%3E%3Cg fill=%22%23ff3b4f%22 fill-opacity=%220.22%22%3E%3Cpath d=%22M30 10L62 10 168 190 134 190Z%22/%3E%3Cpath d=%22M78 10L104 10 188 150 166 150Z%22/%3E%3Cpath d=%22M8 52L28 52 112 190 90 190Z%22/%3E%3C/g%3E%3C/svg%3E");--r:10px;--r2:8px;--head-ls:.06em;--h1-shadow:0 0 22px #ff3b4f77;
+--hero-clip:polygon(0 0,100% 0,100% calc(100% - 22px),95% 100%,90% calc(100% - 14px),83% 100%,76% calc(100% - 16px),68% 100%,60% calc(100% - 12px),52% 100%,44% calc(100% - 18px),35% 100%,27% calc(100% - 12px),18% 100%,10% calc(100% - 16px),0 100%)}
+[data-theme=demonavenger] .card{border-left:3px solid var(--accent)}
+[data-theme=demonavenger] h2:before{box-shadow:0 0 10px var(--accent)}
+@media(max-width:560px){.hero .cp{margin-left:0;width:100%}.avatar{width:130px;height:130px}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap"><span class="brand">MAPLESTORY · TMS</span><span class="spacer"></span><a class="toplink" href="loot.html">⚔ 王團撿寶</a><label>角色<select id="who" aria-label="切換角色"></select></label></div></div>
+<header class="hero"><div class="wrap">
+  <div class="avatar" id="avatar">🍁</div>
+  <div><h1 id="name">花心傑睿</h1><div class="sub" id="tagline"></div><div class="chips" id="chips"></div><div class="exp" id="expbar" hidden><i></i></div></div>
+  <div class="cp" id="cpbox" hidden><small>戰鬥力</small><b id="cp"></b></div>
+</div></header>
+<div class="tabs"><div class="wrap" id="tabs">
+  <button data-t="overview" class="on">總覽</button><button data-t="growth">成長曲線</button><button data-t="equip">裝備</button><button data-t="cash">時裝</button><button data-t="build">能力配點</button>
+  <button data-t="skills">技能</button><button data-t="hexa">HEXA・V</button><button data-t="union">聯盟公會</button><button data-t="more">其他</button>
+</div></div>
+<main class="wrap">
+  <div class="row" id="refreshRow" style="margin-top:14px"><button class="btn pri" id="refreshBtn">↻ 重新整理資料</button><span class="note" id="refreshStat"></span></div>
+  <div id="msg"></div>
+
+  <div class="panel on" id="p-overview">
+    <h2>主要數值</h2><div class="grid" id="mainStats"></div>
+  </div>
+
+  <div class="panel" id="p-growth">
+    <div id="growth" hidden>
+      <h2>經驗成長曲線 <small id="gSub"></small></h2>
+      <div class="row" id="gRange" style="margin-bottom:12px"></div>
+      <div class="grid" id="gStats" style="margin-bottom:14px"></div>
+      <div class="two" style="grid-template-columns:1fr">
+        <div class="card"><div class="gh"><h3>等級進度</h3><span class="note">等級＋經驗% · 每點為一天（近 30 天）或一週</span></div><div class="gc" id="gLine"></div></div>
+        <div class="card"><div class="gh"><h3>每日獲得經驗</h3><span class="note">期間平均，單位：億／兆</span></div><div class="gc" id="gBar"></div></div>
+      </div>
+      <p style="margin:10px 0 0"><button class="btn" id="gTblBtn">顯示資料表</button></p>
+      <div class="card" id="gTbl" hidden style="margin-top:10px;max-height:340px;overflow:auto"><table id="gTblT"></table></div>
+    </div>
+  </div>
+
+  <div class="panel" id="p-equip">
+    <div class="row" id="presets" style="margin-bottom:14px"></div>
+    <h2>裝備欄位 <small>點擊跳到詳細資料</small></h2><div class="eqs" id="eqGrid"></div>
+    <div class="two" style="margin-top:14px"><div class="card" id="titleCard"></div><div class="card" id="setCard"></div></div>
+    <h2>裝備詳細資料</h2><div class="two" id="eqDetail"></div>
+  </div>
+
+  <div class="panel" id="p-cash">
+    <div class="row" id="cashPresets" style="margin-bottom:14px"></div>
+    <h2>時裝</h2><div class="icons" id="cashList"></div>
+    <h2>外觀</h2><div class="grid" id="beauty"></div>
+  </div>
+
+  <div class="panel" id="p-build">
+    <h2>Ability</h2><div class="row" id="abTabs" style="margin-bottom:10px"></div><div class="card"><ul class="list" id="ability"></ul></div>
+    <h2>極限屬性</h2><div class="row" id="hyTabs" style="margin-bottom:10px"></div><div class="card"><ul class="list" id="hyper"></ul></div>
+    <div class="two"><div><h2>傾向</h2><div class="card" id="propensity"></div></div><div><h2>道場</h2><div class="card" id="dojang"></div></div></div>
+  </div>
+
+  <div class="panel" id="p-skills">
+    <h2>連結技能</h2><div class="skills" id="linkSkills"></div>
+    <h2>五轉技能 <small>5th</small></h2><div class="skills" id="skill5"></div>
+    <h2>六轉技能 <small>6th</small></h2><div class="skills" id="skill6"></div>
+  </div>
+
+  <div class="panel" id="p-hexa">
+    <h2>HEXA 核心</h2><div class="mat" id="hexaCores"></div>
+    <h2>HEXA 屬性核心</h2><div class="two" id="hexaStat"></div>
+    <h2>V 矩陣核心 <small id="vSub"></small></h2><div class="mat" id="vCores"></div>
+  </div>
+
+  <div class="panel" id="p-union">
+    <h2>聯盟</h2><div class="grid" id="unionCards"></div>
+    <div style="margin-top:14px" class="two"><div class="card" style="grid-column:1/-1"><h3>聯盟攻擊隊效果</h3><ul class="list" id="raider"></ul></div><div class="card" style="grid-column:1/-1"><h3>占領效果</h3><ul class="list" id="occupied"></ul></div></div>
+    <div class="two" style="margin-top:14px"><div class="card"><h3>內部效果</h3><ul class="list" id="inner"></ul></div><div class="card"><h3>聯盟成員（角色方塊）</h3><ul class="list" id="blocks"></ul></div></div>
+    <h2>神器</h2><div class="two"><div class="card"><h3>神器效果</h3><ul class="list" id="artEffect"></ul></div><div class="card"><h3>神器水晶</h3><ul class="list" id="artCrystal"></ul></div></div>
+    <h2>公會</h2><div class="grid" id="guildCards"></div>
+    <div class="two" style="margin-top:14px"><div class="card"><h3>公會技能</h3><ul class="list" id="gSkill"></ul></div><div class="card"><h3>貴族技能</h3><ul class="list" id="gNoble"></ul></div></div>
+  </div>
+
+  <div class="panel" id="p-more">
+    <h2>符文 <small id="symSub"></small></h2><div class="two" id="symbols"></div>
+    <h2>機器人</h2><div class="card" id="android"></div>
+    <h2>寵物</h2><div class="two" id="pets"></div>
+  </div>
+
+</main>
+<footer>非官方粉絲網站 · 資料來源：NEXON Open API · MapleStory 為 NEXON 所有</footer>
+
+<script src="player.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const num=n=>Number(n).toLocaleString();
+const stat=(k,v,cls='')=>`<div class="card stat ${cls}"><small>${esc(k)}</small><b>${v==null||v===''?'—':v}</b></div>`;
+const lis=a=>a&&a.length?a.map(x=>`<li>${x}</li>`).join(''):'<li class="mute">暫無資料</li>';
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const OPT={str:'STR',dex:'DEX',int:'INT',luk:'LUK',max_hp:'HP',max_mp:'MP',attack_power:'攻擊力',magic_power:'魔攻',armor:'防禦力',boss_damage:'BOSS傷害%',ignore_monster_armor:'無視防禦%',all_stat:'全屬性%',damage:'傷害%'};
+const fmtDate=s=>s?String(s).slice(0,10):'';
+const tabBtns=(el,items,cur,fn)=>{el.innerHTML=items.map(([k,l])=>`<button class="btn ${k===cur?'on':''}" data-k="${k}">${esc(l)}</button>`).join('');el.onclick=e=>{const k=e.target.dataset.k;if(k!==undefined)fn(isNaN(k)?k:+k)}};
+
+/* 分頁 */
+function openTab(t){document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));try{history.replaceState(null,'','#'+t)}catch{}}
+$('tabs').onclick=e=>{if(e.target.dataset.t){openTab(e.target.dataset.t);scrollTo({top:document.querySelector('.tabs').offsetTop-1,behavior:'smooth'})}};
+if(location.hash&&$('p-'+location.hash.slice(1)))openTab(location.hash.slice(1));
+
+/* 重新整理資料 */
+$('refreshBtn').onclick=async()=>{
+  const b=$('refreshBtn'),st=$('refreshStat');b.disabled=true;
+  const actions=window.CFG?.repo?` <a href="https://github.com/${window.CFG.repo}/actions/workflows/update.yml" target="_blank" rel="noopener">到 GitHub Actions 按 Run workflow</a>`:'';
+  try{
+    const r=await fetch('api/refresh?c='+window.CID,{method:'POST'});
+    if(r.status===429){st.textContent=(await r.json()).error;b.disabled=false;return}
+    if(!r.ok&&r.status!==202)throw 0;           // 靜態網站（GitHub Pages）沒有這個 API
+    st.textContent='正在向 Nexon 抓取最新資料，約需 1–2 分鐘…';
+    for(;;){await new Promise(x=>setTimeout(x,4000));const s=await (await fetch('api/status?c='+window.CID)).json();if(!s.refreshing)break}
+    location.reload();
+  }catch{
+    try{
+      const c=await (await fetch(`data/${window.CID}/profile.json?t=`+Date.now())).json();
+      const changed=window.__updated&&c.updated!==window.__updated;
+      if(changed){location.reload();return}
+      st.innerHTML='已是網站上最新的資料。要抓取 Nexon 的最新資料：'+(actions||'請到 GitHub Actions 執行 Update data');
+    }catch{st.textContent='重新整理失敗，請稍後再試'}
+    b.disabled=false;
+  }
+};
+
+
+/* ---------- 經驗成長曲線 ---------- */
+function renderGrowth(hist){
+  const all=(hist?.points||[]).filter(p=>p.exp>0);
+  if(all.length<2)return;
+  $('growth').hidden=false;
+  const DAY=864e5,T=d=>Date.parse(d);
+  const last=all[all.length-1];
+  const fmtExp=v=>v>=1e12?(v/1e12).toFixed(2)+' 兆':v>=1e8?(v/1e8).toFixed(1)+' 億':(v/1e4).toFixed(0)+' 萬';
+  const lvf=p=>p.lv+p.rate/100;
+  const md=d=>d.slice(5).replace('-','/');
+  let range=store.get('gRange',90);
+  const ranges=[[30,'近 30 天'],[90,'近 90 天'],[0,'全部']];
+
+  function slice(){return range?all.filter(p=>T(p.d)>=T(last.d)-range*DAY):all}
+  function gains(pts){ // 相鄰兩點之間的平均每日經驗
+    const o=[];for(let i=1;i<pts.length;i++){const days=(T(pts[i].d)-T(pts[i-1].d))/DAY;o.push({a:pts[i-1].d,b:pts[i].d,days,gain:(pts[i].exp-pts[i-1].exp)/days,total:pts[i].exp-pts[i-1].exp})}return o}
+  function avgPerDay(n){const ref=[...all].reverse().find(p=>T(p.d)<=T(last.d)-n*DAY)||all[0];const days=(T(last.d)-T(ref.d))/DAY;return days?(last.exp-ref.exp)/days:0}
+  function eta(){ // 以目前等級內最近 30 天的經驗%斜率估算
+    const run=all.filter(p=>p.lv===last.lv&&T(p.d)>=T(last.d)-30*DAY);if(run.length<2)return null;
+    const a=run[0],days=(T(last.d)-T(a.d))/DAY;const slope=(last.rate-a.rate)/days;
+    return slope>0?Math.ceil((100-last.rate)/slope):null}
+
+  function niceTicks(lo,hi,n=4){const raw=(hi-lo)/n;if(!(raw>0))return[lo];const p=Math.pow(10,Math.floor(Math.log10(raw)));
+    const st=[1,2,2.5,5,10].map(k=>k*p).find(x=>x>=raw);const t=[];for(let v=Math.ceil(lo/st)*st,i=0;v<=hi+st*1e-9&&i<20;v+=st,i++)t.push(v);return t}
+
+  function chart(el,kind,pts){
+    const W=Math.max(300,el.clientWidth),H=kind==='line'?260:220,m={l:kind==='line'?60:70,r:20,t:16,b:30};
+    const x0=T(pts[0].d),x1=T(pts[pts.length-1].d),X=t=>m.l+(x1===x0?0:(t-x0)/(x1-x0))*(W-m.l-m.r);
+    let rows,ymin,ymax;
+    if(kind==='line'){rows=pts.map(p=>({t:T(p.d),v:lvf(p),p}));const vs=rows.map(r=>r.v);ymin=Math.min(...vs);ymax=Math.max(...vs);const pad=(ymax-ymin||.1)*.12;ymin-=pad;ymax+=pad}
+    else{rows=gains(pts).map(g=>({t:(T(g.a)+T(g.b))/2,ta:T(g.a),tb:T(g.b),v:g.gain,g}));ymin=0;ymax=Math.max(...rows.map(r=>r.v),1)*1.1}
+    const Y=v=>m.t+(1-(v-ymin)/(ymax-ymin))*(H-m.t-m.b);
+    const ticks=niceTicks(ymin,ymax);
+    let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${kind==='line'?'等級進度曲線':'每日獲得經驗長條圖'}">`;
+    for(const v of ticks){const y=Y(v);g+=`<line class="gl" x1="${m.l}" x2="${W-m.r}" y1="${y}" y2="${y}"/><text x="${m.l-8}" y="${y+4}" text-anchor="end">${kind==='line'?(+v.toFixed(2)):(v>=1e12?+(v/1e12).toFixed(2)+'兆':v>=1e8?+(v/1e8).toFixed(1)+'億':+(v/1e4).toFixed(0)+'萬')}</text>`}
+    const nx=Math.min(5,Math.max(2,Math.floor((W-m.l-m.r)/110)));
+    for(let i=0;i<nx;i++){const t=x0+(x1-x0)*i/(nx-1);g+=`<text x="${X(t)}" y="${H-8}" text-anchor="${i===0?'start':i===nx-1?'end':'middle'}">${md(new Date(t).toISOString().slice(0,10))}</text>`}
+    if(kind==='line'){
+      const d=rows.map((r,i)=>`${i?'L':'M'}${X(r.t).toFixed(1)},${Y(r.v).toFixed(1)}`).join('');
+      g+=`<path class="ar" d="${d}L${X(rows[rows.length-1].t)},${Y(ymin)}L${X(rows[0].t)},${Y(ymin)}Z"/><path class="ln" d="${d}"/>`;
+      const e=rows[rows.length-1];g+=`<circle class="dot" cx="${X(e.t)}" cy="${Y(e.v)}" r="5"/><text class="lab" x="${X(e.t)-10}" y="${Y(e.v)-10}" text-anchor="end">Lv.${e.p.lv} · ${e.p.rate.toFixed(1)}%</text>`;
+    }else{
+      rows.forEach((r,i)=>{const span=X(r.tb)-X(r.ta);const bw=Math.max(2,Math.min(24,span-2));const h=Math.max(0,Y(0)-Y(r.v));
+        g+=`<path class="bar" data-i="${i}" d="M${X(r.t)-bw/2},${Y(0)}v${-Math.max(0,h-4)}q0,-4 4,-4h${bw-8}q4,0 4,4v${Math.max(0,h-4)}z"/>`});
+    }
+    g+=`<line class="xh" id="xh" y1="${m.t}" y2="${H-m.b}" style="display:none"/>`;
+    g+=`<rect id="hit" x="${m.l}" y="0" width="${W-m.l-m.r}" height="${H}" fill="transparent"/></svg><div class="tip"></div>`;
+    el.innerHTML=g;
+    const svg=el.querySelector('svg'),tip=el.querySelector('.tip'),xh=el.querySelector('#xh');
+    const show=e=>{
+      const r0=svg.getBoundingClientRect(),px=(e.clientX-r0.left)*(W/r0.width);
+      let best=rows[0];for(const r of rows)if(Math.abs(X(r.t)-px)<Math.abs(X(best.t)-px))best=r;
+      xh.setAttribute('x1',X(best.t));xh.setAttribute('x2',X(best.t));xh.style.display='';
+      el.querySelectorAll('.bar').forEach(b=>b.classList.toggle('hv',+b.dataset.i===rows.indexOf(best)));
+      if(kind==='line'){const p=best.p;tip.innerHTML=`<span class="m"></span><b></b><span class="m"></span>`;
+        tip.children[0].textContent=p.d;tip.children[1].textContent=`Lv.${p.lv} · ${p.rate.toFixed(3)}%`;tip.children[2].textContent=`累積經驗 ${fmtExp(p.exp)}`}
+      else{const q=best.g;tip.innerHTML=`<span class="m"></span><b></b><span class="m"></span>`;
+        tip.children[0].textContent=`${q.a} → ${q.b}（${q.days} 天）`;tip.children[1].textContent=`平均每日 ${fmtExp(q.gain)}`;tip.children[2].textContent=`期間合計 ${fmtExp(q.total)}`}
+      tip.style.display='block';const cx=X(best.t)*(r0.width/W);
+      tip.style.left=Math.min(Math.max(0,cx-tip.offsetWidth/2),el.clientWidth-tip.offsetWidth)+'px';tip.style.top='-6px';tip.style.transform='translateY(-100%)';
+    };
+    const hide=()=>{tip.style.display='none';xh.style.display='none';el.querySelectorAll('.bar.hv').forEach(b=>b.classList.remove('hv'))};
+    const hit=el.querySelector('#hit');hit.onpointermove=show;hit.onpointerdown=show;hit.onpointerleave=hide;
+  }
+
+  function stats(){
+    const e=eta(),a7=avgPerDay(7),a30=avgPerDay(30),first=all[0];
+    $('gStats').innerHTML=stat('近 7 天日均經驗',fmtExp(a7),'hl')+stat('近 30 天日均經驗',fmtExp(a30))+stat('預估升級',e?`約 ${e} 天`:'—')
+      +stat('追蹤期間',`${first.d.slice(0,7)} 起`)+stat('期間成長',`Lv.${first.lv} → ${last.lv}`);
+    $('gSub').textContent=`資料至 ${last.d}`;
+  }
+  function table(){
+    const gs=gains(all);$('gTblT').innerHTML='<tr><th>日期</th><th>等級</th><th>經驗%</th><th>累積經驗</th><th>平均每日</th></tr>'+
+      [...all].reverse().map(p=>{const g=gs.find(x=>x.b===p.d);return `<tr><td>${esc(p.d)}</td><td>${p.lv}</td><td>${p.rate.toFixed(3)}%</td><td>${fmtExp(p.exp)}</td><td>${g?fmtExp(g.gain):'—'}</td></tr>`}).join('')}
+  function draw(){const pts=slice();if(pts.length<2)return;chart($('gLine'),'line',pts);chart($('gBar'),'bar',pts)}
+  const setRange=k=>{range=k;store.set('gRange',k);tabBtns($('gRange'),ranges,range,setRange);draw()};
+  tabBtns($('gRange'),ranges,range,setRange);
+  stats();table();draw();
+  $('gTblBtn').onclick=()=>{const h=$('gTbl').hidden;$('gTbl').hidden=!h;$('gTblBtn').textContent=h?'隱藏資料表':'顯示資料表'};
+  let rt,lw=$('gLine').clientWidth;new ResizeObserver(()=>{const w=$('gLine').clientWidth;if(w===lw)return;lw=w;clearTimeout(rt);rt=setTimeout(draw,120)}).observe($('gLine'));
+}
+
+
+/* 技能圖示對照（HEXA / V 核心名稱 → 技能圖示） */
+let iconNames=[],iconMap={};
+function buildIcons(d){iconMap={};for(const k of['skill5','skill6'])for(const x of d[k]?.character_skill||[])iconMap[x.skill_name]=x.skill_icon;
+  for(const x of d.link?.character_link_skill||[])iconMap[x.skill_name]=x.skill_icon;iconNames=Object.keys(iconMap)}
+function iconFor(raw){
+  const c=[];for(const part of String(raw).split('/')){const p=part.trim(),q=p.replace(/強化$/,'').replace(/^強化/,'').replace(/書$/,'');c.push(p,q,'強化'+q)}
+  for(const k of c)if(iconMap[k])return iconMap[k];
+  for(const k of c){if(k.length<3)continue;const n=iconNames.find(n=>n.startsWith(k)||(k.startsWith(n)&&n.length>=3));if(n)return iconMap[n]}
+  for(const k of c){if(k.length<3)continue;const n=iconNames.find(n=>n.includes(k));if(n)return iconMap[n]}
+  return null}
+const iconRow=(names)=>`<div class="ci">${names.slice(0,4).map(n=>{const u=iconFor(n);return u?`<img src="${esc(u)}" alt="" title="${esc(n)}">`:`<i title="${esc(n)}">${esc(String(n)[0])}</i>`}).join('')}</div>`;
+
+/* 技能卡 */
+const skillCard=x=>`<div class="sk"><img src="${esc(x.skill_icon)}" alt=""><div><b>${esc(x.skill_name)}</b><span class="lv">Lv.${x.skill_level}</span><p>${esc(x.skill_effect||x.skill_description||'')}</p></div></div>`;
+const optList=o=>Object.entries(o||{}).filter(([k,v])=>OPT[k]&&+v).map(([k,v])=>`${OPT[k]} +${v}`).join('　');
+const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Boolean).map(esc).join(' / ')}</p>`:'';
+
+(async()=>{
+  const cfg=await (await fetch('config.json')).json();window.CFG=cfg;
+  const chars=cfg.characters;
+  const THEMES={夜使者:'nightlord',破風使者:'windarcher',暗影神偷:'shadower',惡魔復仇者:'demonavenger'};
+  const q=new URLSearchParams(location.search).get('c');
+  const cur=chars.find(c=>c.id===q)||chars.find(c=>c.id===store.get('who',''))||chars[0];
+  window.CID=cur.id;store.set('who',cur.id);
+  const setTheme=job=>{document.documentElement.dataset.theme=THEMES[job]||'default'};
+  setTheme(cur.job);
+  $('who').innerHTML=chars.map(c=>`<option value="${esc(c.id)}" ${c.id===cur.id?'selected':''}>${esc(c.name)}（${esc(c.job)}）</option>`).join('');
+  $('who').onchange=e=>{store.set('who',e.target.value);location.href=location.pathname+'?c='+encodeURIComponent(e.target.value)+location.hash};
+  document.title=`${cur.name} | TMS 新楓之谷`;
+  window.MusicPlayer?.set(cur.music);
+  $('name').textContent=cur.name;$('tagline').textContent=cur.job;
+  $('chips').innerHTML=`<span>${esc(cfg.server)}</span><span>版本 ${esc(cfg.version)}</span>`;
+  let d;
+  try{const r=await fetch(`data/${cur.id}/profile.json?t=`+Date.now());if(!r.ok)throw new Error('這個角色的資料還沒抓取完成，請稍後按「重新整理資料」');const c=await r.json();d={...c.data,_updated:c.updated,_errors:c.errors}}
+  catch(e){$('msg').innerHTML=`<span class="err">${esc(e.message)}</span>`;return}
+
+  window.__updated=d._updated;const b=d.basic||{},s=d.stat||{};setTheme(b.character_class||cur.job);
+  const fs=s.final_stat||[];const f=n=>fs.find(x=>x.stat_name===n)?.stat_value;
+  const P=n=>f(n)!=null?f(n)+'%':null;
+  if(b.character_image)$('avatar').innerHTML=`<img src="${esc(b.character_image)}" alt="角色外觀">`;
+  if(b.character_exp_rate){$('expbar').hidden=false;$('expbar').firstElementChild.style.width=b.character_exp_rate+'%'}
+  $('tagline').textContent=`Lv.${b.character_level}　${b.character_class||''}${b.character_class_level?`（${b.character_class_level}轉）`:''}　·　EXP ${b.character_exp_rate}%`;
+  $('chips').innerHTML=`<span>${esc(cfg.server)}</span><span>${esc(b.world_name||'')}</span>${b.character_guild_name?`<span>公會 ${esc(b.character_guild_name)}</span>`:''}${d.popularity?`<span>人氣 ${num(d.popularity.popularity)}</span>`:''}<span>版本 ${esc(cfg.version)}</span>`;
+  if(f('戰鬥力')){$('cpbox').hidden=false;$('cp').textContent=num(f('戰鬥力'))}
+  $('msg').innerHTML=`<p class="note" style="margin:10px 0 0">資料日期 ${esc(fmtDate(d.date))}（官方每日更新）· 網站快取 ${new Date(d._updated).toLocaleString('zh-TW')}${d._errors&&Object.keys(d._errors).length?` · 暫缺：${esc(Object.keys(d._errors).join('、'))}`:''}</p>`;
+
+  try{const hr=await fetch(`data/${cur.id}/history.json?t=`+Date.now());if(hr.ok)renderGrowth(await hr.json())}catch{}
+
+  /* 總覽 */
+  $('mainStats').innerHTML=stat('戰鬥力',f('戰鬥力')&&num(f('戰鬥力')),'hl')+stat('最終傷害',P('最終傷害'),'hl')+stat('BOSS 傷害',P('BOSS怪物傷害'),'hl')+stat('傷害',P('傷害'))+stat('無視防禦率',P('無視防禦率'))+stat('爆擊傷害',P('爆擊傷害'))+stat('爆擊機率',P('爆擊機率'))
+    +stat('最高屬性攻擊力',f('最高屬性攻擊力')&&num(f('最高屬性攻擊力')))+stat('神祕力量',f('神祕力量'))+stat('真實之力',f('真實之力'))+stat('星力',f('星力'));
+
+  /* 裝備 */
+  const E=d.equip||{};let items=[];
+  function renderEquip(){
+    $('eqGrid').innerHTML=items.map((i,n)=>`<button class="slot g-${esc(i.potential_option_grade)}" data-n="${n}"><img src="${esc(i.item_icon)}" alt="">${esc(i.item_equipment_slot)}${+i.starforce>0?`<div class="st">★${i.starforce}</div>`:''}</button>`).join('');
+    $('eqDetail').innerHTML=items.map(i=>`<div class="card ec g-${esc(i.potential_option_grade)}"><img src="${esc(i.item_icon)}" alt=""><div>
+      <h4>${esc(i.item_name)} <span class="tag">${esc(i.item_equipment_slot)}</span></h4>
+      <p>${+i.starforce?`<span class="star">★${i.starforce}</span>　`:''}${i.scroll_upgrade&&i.scroll_upgrade!=='0'?`卷軸 ${esc(i.scroll_upgrade)} 次　`:''}${i.item_base_option?.base_equipment_level?`Lv.${i.item_base_option.base_equipment_level}`:''}</p>
+      <p><span class="k">總屬性</span> ${esc(optList(i.item_total_option))||'—'}</p>
+      ${optList(i.item_add_option)?`<p><span class="k">附加屬性</span> ${esc(optList(i.item_add_option))}</p>`:''}
+      ${optList(i.item_etc_option)?`<p><span class="k">卷軸強化</span> ${esc(optList(i.item_etc_option))}</p>`:''}
+      ${optList(i.item_starforce_option)?`<p><span class="k">星力強化</span> ${esc(optList(i.item_starforce_option))}</p>`:''}
+      ${potLine(i.potential_option_grade,[i.potential_option_1,i.potential_option_2,i.potential_option_3])}
+      ${potLine(i.additional_potential_option_grade,[i.additional_potential_option_1,i.additional_potential_option_2,i.additional_potential_option_3])}
+      ${i.soul_name?`<p><span class="k">武器魂</span> ${esc(i.soul_name)} ${esc(i.soul_option||'')}</p>`:''}
+    </div></div>`).join('')||'<p class="note">暫無資料</p>';
+  }
+  function pickEquip(n){
+    items=(n==='cur'?E.item_equipment:E['item_equipment_preset_'+n])||E.item_equipment||[];
+    tabBtns($('presets'),[['cur',`目前穿著（預設 ${E.preset_no}）`],...[1,2,3].filter(x=>(E['item_equipment_preset_'+x]||[]).length).map(x=>[x,'預設 '+x])],n,pickEquip);renderEquip();
+  }
+  pickEquip('cur');
+  $('eqGrid').onclick=e=>{const el=e.target.closest('.slot');if(!el)return;const t=$('eqDetail').children[+el.dataset.n];if(t){t.scrollIntoView({behavior:'smooth',block:'center'});t.classList.remove('flash');void t.offsetWidth;t.classList.add('flash')}};
+  const T=E.title;
+  $('titleCard').innerHTML=T?.title_name?`<h3>稱號</h3><div class="row"><img src="${esc(T.title_icon)}" width="36" style="image-rendering:pixelated" alt=""><b>${esc(T.title_name)}</b></div><p class="note" style="white-space:pre-line">${esc(T.title_description||'')}</p>`:'<h3>稱號</h3><p class="mute">無</p>';
+  $('setCard').innerHTML=`<h3>套裝效果</h3><ul class="list">${lis((d.setEffect?.set_effect||[]).map(x=>`<b>${esc(x.set_name)}</b> <span class="tag">${x.total_set_count} 件</span>`))}</ul>`;
+
+  /* 時裝 */
+  const C=d.cash||{};
+  function pickCash(n){
+    const list=(n==='cur'?C.cash_item_equipment_base:C['cash_item_equipment_preset_'+n])||[];
+    tabBtns($('cashPresets'),[['cur','目前穿著'],...[1,2,3].filter(x=>(C['cash_item_equipment_preset_'+x]||[]).length).map(x=>[x,'預設 '+x])],n,pickCash);
+    $('cashList').innerHTML=list.map(x=>`<figure title="${esc(x.cash_item_name)}"><img src="${esc(x.cash_item_icon)}" alt="">${esc(x.cash_item_equipment_slot)}<br><span style="color:var(--ink)">${esc(x.cash_item_name)}</span></figure>`).join('')||'<p class="note">暫無資料</p>';
+  }
+  pickCash('cur');
+  const be=d.beauty||{};const bt=(k,o)=>o?stat(k,esc(o.hair_name||o.face_name||o.skin_name)+(o.base_color?`<span class="tag">${esc(o.base_color)}</span>`:'')):'';
+  $('beauty').innerHTML=bt('髮型',be.character_hair)+bt('臉型',be.character_face)+bt('膚色',be.character_skin)+stat('外觀模式',C.character_look_mode==='0'?'一般':esc(C.character_look_mode));
+
+  /* 能力 */
+  const AB=d.ability||{};
+  function pickAb(n){
+    const p=n===0?{ability_info:AB.ability_info,ability_grade:AB.ability_grade}:AB['ability_preset_'+n];
+    tabBtns($('abTabs'),[[0,`使用中（預設 ${AB.preset_no}）`],...[1,2,3].filter(x=>AB['ability_preset_'+x]).map(x=>[x,'預設 '+x])],n,pickAb);
+    $('ability').innerHTML=lis((p?.ability_info||[]).map(a=>`<b class="gt-${esc(a.ability_grade)}">${esc(a.ability_grade)}</b>　${esc(a.ability_value)}`));
+  }
+  pickAb(0);
+  const H=d.hyper||{};
+  function pickHy(n){
+    tabBtns($('hyTabs'),[1,2,3].filter(x=>H['hyper_stat_preset_'+x]).map(x=>[x,`預設 ${x}${x==+H.use_preset_no?'（使用中）':''}`]),n,pickHy);
+    $('hyper').innerHTML=lis([`<span class="mute">剩餘點數 ${esc(H['hyper_stat_preset_'+n+'_remain_point']??H.use_available_hyper_stat)}</span>`,...(H['hyper_stat_preset_'+n]||[]).filter(x=>x.stat_level).map(x=>`<b>${esc(x.stat_type)}</b>　Lv.${x.stat_level}　<span class="mute">${esc(x.stat_increase||'')}</span>`)]);
+  }
+  pickHy(+H.use_preset_no||1);
+  const pr=d.propensity;
+  $('propensity').innerHTML=pr?[['領導力','charisma_level'],['感性','sensibility_level'],['洞察力','insight_level'],['意志','willingness_level'],['手藝','handicraft_level'],['愛心','charm_level']].map(([n,k])=>`<div style="margin-bottom:8px"><span>${n}</span> <b style="float:right">Lv.${pr[k]}</b><div class="bar"><i style="width:${Math.min(100,pr[k])}%"></i></div></div>`).join(''):'<p class="mute">暫無資料</p>';
+  const dj=d.dojang;
+  $('dojang').innerHTML=dj?`<div class="grid" style="grid-template-columns:1fr 1fr">${stat('最高層數',dj.dojang_best_floor+' 層')}${stat('最佳時間',Math.floor(dj.dojang_best_time/60)+' 分 '+dj.dojang_best_time%60+' 秒')}</div><p class="note">紀錄日期 ${esc(fmtDate(dj.date_dojang_record))}</p>`:'<p class="mute">暫無資料</p>';
+
+  /* 技能 */
+  $('linkSkills').innerHTML=(d.link?.character_link_skill||[]).map(skillCard).join('');
+  $('skill5').innerHTML=(d.skill5?.character_skill||[]).map(skillCard).join('')||'<p class="note">暫無資料</p>';
+  $('skill6').innerHTML=(d.skill6?.character_skill||[]).map(skillCard).join('')||'<p class="note">暫無資料</p>';
+
+  /* HEXA / V */
+  buildIcons(d);
+  $('hexaCores').innerHTML=(d.hexa?.character_hexa_core_equipment||[]).map(x=>`<div class="core">${iconRow((x.linked_skill||[]).map(l=>l.hexa_skill_id).filter(Boolean).concat(x.linked_skill?.length?[]:[x.hexa_core_name]))}<b>${esc(x.hexa_core_name)}</b><span class="lv">Lv.${x.hexa_core_level}</span> <span class="tag">${esc(x.hexa_core_type||'')}</span></div>`).join('')||'<p class="note">暫無資料</p>';
+  const HS=d.hexaStat||{};
+  const hsCard=(c,t)=>c?`<div class="card"><h3>${t}</h3><ul class="list"><li><b>${esc(c.main_stat_name)}</b> Lv.${c.main_stat_level} <span class="tag">主</span></li><li>${esc(c.sub_stat_name_1)} Lv.${c.sub_stat_level_1} <span class="tag">副</span></li><li>${esc(c.sub_stat_name_2)} Lv.${c.sub_stat_level_2} <span class="tag">副</span></li></ul><p class="note">等級合計 ${c.stat_grade}</p></div>`:'';
+  $('hexaStat').innerHTML=hsCard(HS.character_hexa_stat_core?.[0],'屬性核心 I')+hsCard(HS.character_hexa_stat_core_2?.[0],'屬性核心 II')+hsCard(HS.character_hexa_stat_core_3?.[0],'屬性核心 III')||'<p class="note">暫無資料</p>';
+  const V=d.vmatrix?.character_v_core_equipment||[];
+  $('vSub').textContent=V.length?`${V.length} 個核心`:'';
+  $('vCores').innerHTML=V.map(x=>`<div class="core">${iconRow(String(x.v_core_name).split('/'))}<b>${esc(x.v_core_name)}</b><span class="lv">Lv.${x.v_core_level}</span>${x.slot_level?`<span class="tag">欄位 ${x.slot_level}</span>`:''}<br><span class="tag" style="margin:0">${esc(x.v_core_type)}</span>${[x.v_core_skill_1,x.v_core_skill_2,x.v_core_skill_3].filter(Boolean).map(v=>`<div class="note">${esc(v)}</div>`).join('')}</div>`).join('')||'<p class="note">暫無資料</p>';
+
+  /* 聯盟 / 公會 */
+  const un=d.union,ar=d.artifact,rd=d.raider,g=d.guild;
+  $('unionCards').innerHTML=un?stat('聯盟等級',num(un.union_level),'hl')+stat('階級',esc(un.union_grade))+stat('神器等級',un.union_artifact_level)+stat('神器經驗',num(un.union_artifact_exp))+stat('神器點數',num(un.union_artifact_point))+(ar?stat('剩餘 AP',ar.union_artifact_remain_ap):''):'<p class="note">暫無資料</p>';
+  $('raider').innerHTML=lis(rd?.union_raider_stat?.map(esc));$('occupied').innerHTML=lis(rd?.union_occupied_stat?.map(esc));
+  $('inner').innerHTML=lis(rd?.union_inner_stat?.map(x=>esc(x.stat_field_effect)));
+  $('blocks').innerHTML=lis(rd?.union_block?.map(x=>`<b>${esc(x.block_class)}</b> <span class="tag">Lv.${esc(x.block_level)}</span> <span class="mute">${esc(x.block_type)}</span>`));
+  $('artEffect').innerHTML=lis(ar?.union_artifact_effect?.map(x=>`${esc(x.name)} <span class="tag">Lv.${x.level}</span>`));
+  $('artCrystal').innerHTML=lis(ar?.union_artifact_crystal?.map(x=>`<b>${esc(x.name)}</b> <span class="tag">Lv.${x.level}</span><br><span class="mute">${[x.crystal_option_name_1,x.crystal_option_name_2,x.crystal_option_name_3].filter(Boolean).map(esc).join('・')}</span>`));
+  $('guildCards').innerHTML=g?stat('公會',esc(g.guild_name),'hl')+stat('等級','Lv.'+g.guild_level)+stat('人數',g.guild_member_count)+stat('公會長',esc(g.guild_master_name))+stat('名聲',num(g.guild_fame))+stat('公會點數',num(g.guild_point)):'<p class="note">暫無資料</p>';
+  $('gSkill').innerHTML=lis(g?.guild_skill?.map(x=>`<b>${esc(x.skill_name)}</b> <span class="tag">Lv.${x.skill_level}</span><br><span class="mute">${esc(x.skill_effect)}</span>`));
+  $('gNoble').innerHTML=lis(g?.guild_noblesse_skill?.map(x=>`<b>${esc(x.skill_name)}</b> <span class="tag">Lv.${x.skill_level}</span><br><span class="mute">${esc(x.skill_effect)}</span>`));
+
+  /* 其他：符文 / 機器人 / 寵物 */
+  const sy=d.symbol?.symbol||[];
+  $('symSub').textContent=sy.length?`共 ${sy.length} 個`:'';
+  $('symbols').innerHTML=sy.map(x=>{const pct=Math.min(100,x.symbol_require_growth_count?x.symbol_growth_count/x.symbol_require_growth_count*100:100);
+    const o=Object.entries({STR:x.symbol_str,DEX:x.symbol_dex,INT:x.symbol_int,LUK:x.symbol_luk,HP:x.symbol_hp}).filter(([,v])=>+v).map(([k,v])=>`${k} +${v}`).join('　');
+    return `<div class="card ec"><img src="${esc(x.symbol_icon)}" alt=""><div style="flex:1"><h4>${esc(x.symbol_name)} <span class="tag">Lv.${x.symbol_level}</span></h4><p>力量 ${esc(x.symbol_force)}　${esc(o)}</p><p class="note">成長 ${x.symbol_growth_count}/${x.symbol_require_growth_count}</p><div class="bar"><i style="width:${pct}%"></i></div></div></div>`}).join('')||'<p class="note">暫無資料</p>';
+  const an=d.android;
+  $('android').innerHTML=an?.android_name?`<div class="ec" style="border:0"><img src="${esc(an.android_icon)}" alt=""><div><h4>${esc(an.android_nickname||an.android_name)} <span class="tag">${esc(an.android_name)}</span><span class="tag">${esc(an.android_grade)}級</span></h4><p class="note">${esc(an.android_description||'')}</p><p>髮型：${esc(an.android_hair?.hair_name||'—')}　臉型：${esc(an.android_face?.face_name||'—')}</p></div></div>
+    <div class="icons" style="margin-top:8px">${(an.android_cash_item_equipment||[]).map(x=>`<figure title="${esc(x.cash_item_name)}"><img src="${esc(x.cash_item_icon)}" alt="">${esc(x.cash_item_equipment_slot)}</figure>`).join('')}</div>`:'<p class="mute">無</p>';
+  const pe=d.pet||{};
+  $('pets').innerHTML=[1,2,3].filter(n=>pe['pet_'+n+'_name']).map(n=>{const g=k=>pe['pet_'+n+'_'+k];const eq=g('equipment')||{};const au=g('auto_skill')||{};
+    return `<div class="card"><div class="ec" style="border:0;padding:0"><img src="${esc(g('icon'))}" alt=""><div><h4>${esc(g('nickname')||g('name'))} <span class="tag">${esc(g('name'))}</span></h4><p class="note">${esc(g('pet_type')||'')}　到期 ${esc(fmtDate(g('date_expire'))||'永久')}</p></div></div>
+      ${eq.item_name?`<p><span class="mute">裝備</span> ${esc(eq.item_name)} ${(eq.item_option||[]).map(o=>`<span class="tag">${esc(o.option_type)} +${esc(o.option_value)}</span>`).join('')}</p>`:''}
+      ${au.skill_1?`<p><span class="mute">自動技能</span> ${[au.skill_1,au.skill_2].filter(Boolean).map(esc).join('、')}</p>`:''}
+      ${(g('skill')||[]).length?`<p><span class="mute">技能</span> ${g('skill').map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</p>`:''}
+      ${(g('potential')||[]).filter(p=>p.potential_type).map(p=>`<p><span class="mute">潛能 ${esc(p.potential_step)}階</span> ${esc(p.potential_type)} +${esc(p.potential_increase1)}${p.potential_increase2?`/${esc(p.potential_increase2)}`:''}</p>`).join('')}</div>`}).join('')||'<p class="note">暫無資料</p>';
+
+})();
+</script>
+</body>
+</html>

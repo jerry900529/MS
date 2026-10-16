@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>王團撿寶輪替表 | TMS 新楓之谷</title>
+  <meta name="description" content="楓之谷王團掉寶撿取順序紀錄" />
+  <link rel="icon" type="image/png" sizes="256x256" href="favicon.png" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="loot/style.css" />
+</head>
+<body>
+  <div class="topbar"><div class="wrap"><span class="brand">MAPLESTORY · TMS</span><a href="./">← 角色資料</a></div></div>
+  <div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <header class="top">
+    <div class="brand">
+      <span class="logo">🍁</span>
+      <div>
+        <h1>王團撿寶輪替表</h1>
+        <p class="sub">Jerry · YC · W10 — 下一個輪到誰撿?</p>
+      </div>
+    </div>
+    <div class="auth">
+      <button id="undoBtn" class="btn ghost">↩ 復原</button>
+      <span id="syncBadge" class="badge"></span>
+      <button id="lockBtn" class="btn ghost" hidden>🔒 鎖定</button>
+      <button id="resetBtn" class="btn ghost">重設</button>
+    </div>
+  </header>
+
+  <main>
+    <form id="lockBar" class="lockbar" hidden>
+      <span>🔒 輸入通關密語後才能操作(不輸入也能查看)</span>
+      <input id="passInput" type="password" autocomplete="off" placeholder="通關密語" />
+      <button class="btn primary" type="submit">解鎖</button>
+    </form>
+    <section class="summary" aria-label="每個人下次可撿的寶物">
+      <div id="summary" class="summary-grid"></div>
+    </section>
+
+    <section id="grid" class="grid" aria-live="polite">
+      <p class="loading">載入中…</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>按「已撿取」換下一位,或直接點名字手動指定。所有人看到的進度會即時同步。</p>
+  </footer>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="player.js"></script>
+  <script>fetch("config.json").then((r) => r.json()).then((c) => window.MusicPlayer?.set(c.loot?.music)).catch(() => {});</script>
+  <script type="module" src="loot/app.js"></script>
+</body>
+</html>
