@@ -93,6 +93,9 @@ table{width:100%;border-collapse:collapse;font-size:.88rem}td,th{padding:7px 8px
 .note{color:var(--mute);font-size:.82rem}.err{display:block;background:#e5533d1a;border:1px dashed var(--accent2);border-radius:12px;padding:12px 16px;margin:16px 0}
 footer{text-align:center;color:var(--mute);font-size:.78rem;padding:28px 0 40px}
 
+/* misc */
+.stamp{display:flex;flex-wrap:wrap;gap:4px 20px;margin:12px 0 0;padding:10px 14px;border:1px solid var(--line);border-radius:var(--r2);background:var(--card);font-size:.88rem;color:var(--mute)}
+.stamp b{color:var(--ink);font-variant-numeric:tabular-nums}.stamp.stale{border-color:var(--star);color:var(--star)}.stamp.stale b{color:inherit}
 /* growth charts */
 .gc{position:relative}.gc svg{display:block;width:100%;height:auto;overflow:visible}
 .gc .gl{stroke:var(--grid);stroke-width:1}.gc text{fill:var(--axis);font-size:13.5px;font-family:inherit}
@@ -236,6 +239,10 @@ const lis=a=>a&&a.length?a.map(x=>`<li>${x}</li>`).join(''):'<li class="mute">�
 const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const OPT={str:'STR',dex:'DEX',int:'INT',luk:'LUK',max_hp:'HP',max_mp:'MP',attack_power:'攻擊力',magic_power:'魔攻',armor:'防禦力',boss_damage:'BOSS傷害%',ignore_monster_armor:'無視防禦%',all_stat:'全屬性%',damage:'傷害%'};
 const fmtDate=s=>s?String(s).slice(0,10):'';
+// 一律以台北時間顯示（GitHub 伺服器是 UTC，訪客也可能在不同時區）
+const fmtTW=(ms,withYear=true)=>{const p=Object.fromEntries(new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(ms).map(x=>[x.type,x.value]));
+  return `${withYear?p.year+'/':''}${p.month}/${p.day} ${p.hour}:${p.minute}`};
+const ago=ms=>{const m=Math.max(0,Math.floor((Date.now()-ms)/60000));return m<1?'剛剛':m<60?`${m} 分鐘前`:m<1440?`${Math.floor(m/60)} 小時前`:`${Math.floor(m/1440)} 天前`};
 const tabBtns=(el,items,cur,fn)=>{el.innerHTML=items.map(([k,l])=>`<button class="btn ${k===cur?'on':''}" data-k="${k}">${esc(l)}</button>`).join('');el.onclick=e=>{const k=e.target.dataset.k;if(k!==undefined)fn(isNaN(k)?k:+k)}};
 
 /* 分頁 */
@@ -391,9 +398,10 @@ const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Bo
   if(b.character_image)$('avatar').innerHTML=`<img src="${esc(b.character_image)}" alt="角色外觀">`;
   if(b.character_exp_rate){$('expbar').hidden=false;$('expbar').firstElementChild.style.width=b.character_exp_rate+'%'}
   $('tagline').textContent=`Lv.${b.character_level}　${b.character_class||''}${b.character_class_level?`（${b.character_class_level}轉）`:''}　·　EXP ${b.character_exp_rate}%`;
-  $('chips').innerHTML=`<span>${esc(cfg.server)}</span><span>${esc(b.world_name||'')}</span>${b.character_guild_name?`<span>公會 ${esc(b.character_guild_name)}</span>`:''}${d.popularity?`<span>人氣 ${num(d.popularity.popularity)}</span>`:''}<span>版本 ${esc(cfg.version)}</span>`;
+  $('chips').innerHTML=`<span>${esc(cfg.server)}</span><span>${esc(b.world_name||'')}</span>${b.character_guild_name?`<span>公會 ${esc(b.character_guild_name)}</span>`:''}${d.popularity?`<span>人氣 ${num(d.popularity.popularity)}</span>`:''}<span>版本 ${esc(cfg.version)}</span><span title="資料最後更新時間（台北時間）">🕒 ${fmtTW(d._updated,false)} 更新</span>`;
   if(f('戰鬥力')){$('cpbox').hidden=false;$('cp').textContent=num(f('戰鬥力'))}
-  $('msg').innerHTML=`<p class="note" style="margin:10px 0 0">資料日期 ${esc(fmtDate(d.date))}（官方每日更新）· 網站快取 ${new Date(d._updated).toLocaleString('zh-TW')}${d._errors&&Object.keys(d._errors).length?` · 暫缺：${esc(Object.keys(d._errors).join('、'))}`:''}</p>`;
+  {const age=Date.now()-d._updated,stale=age>36*3600e3,miss=d._errors&&Object.keys(d._errors).length;
+    $('msg').innerHTML=`<div class="stamp${stale?' stale':''}"><span>🕒 最後更新 <b>${fmtTW(d._updated)}</b>（台北時間・${ago(d._updated)}）</span><span>遊戲資料日期 <b>${esc(fmtDate(d.date).replace(/-/g,'/'))}</b>（Nexon 每日更新）</span>${stale?`<span>⚠ 已超過 ${Math.floor(age/864e5)||1} 天沒有更新，資料可能不是最新</span>`:''}${miss?`<span>暫缺：${esc(Object.keys(d._errors).join('、'))}</span>`:''}</div>`}
 
   try{const hr=await fetch(`data/${cur.id}/history.json?t=`+Date.now());if(hr.ok)renderGrowth(await hr.json())}catch{}
 
