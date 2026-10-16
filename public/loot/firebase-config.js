@@ -1,5 +1,5 @@
 // Firebase Web 設定。這些值本來就會公開在前端(apiKey 只是識別碼),
-// 安全性靠 firestore.rules 與網域限制,見 README。
+// 安全性靠 firestore.rules 與網域限制,見 CLAUDE.md。
 // 若改回 YOUR_... 開頭,網站會用瀏覽器本機儲存(不會同步)。
 
 export const firebaseConfig = {

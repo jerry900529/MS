@@ -8,7 +8,6 @@
       "name": "花心傑睿",
       "job": "夜使者",
       "music": {
-        "src": "audio/kerning.mp3",
         "title": "墮落城市",
         "yt": "t3AfgamDW9M"
       }
@@ -18,7 +17,6 @@
       "name": "窩愛盧十",
       "job": "破風使者",
       "music": {
-        "src": "audio/ereve.mp3",
         "title": "耶雷弗",
         "yt": "9i6FCL6yKv4"
       }
@@ -28,7 +26,6 @@
       "name": "9aYuminG",
       "job": "暗影神偷",
       "music": {
-        "src": "audio/kerning.mp3",
         "title": "墮落城市",
         "yt": "t3AfgamDW9M"
       }
@@ -38,7 +35,6 @@
       "name": "可疑Alucard",
       "job": "惡魔復仇者",
       "music": {
-        "src": "audio/edelstein.mp3",
         "title": "埃德爾斯坦",
         "yt": "-3qY7zi5iHo"
       }
@@ -51,7 +47,6 @@
       "W10": "lushi"
     },
     "music": {
-      "src": "audio/kerning.mp3",
       "title": "墮落城市",
       "yt": "t3AfgamDW9M"
     }

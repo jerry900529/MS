@@ -7,13 +7,13 @@
 | 路徑 | 作用 |
 |---|---|
 | `public/index.html` | **整個角色頁的 CSS + JS 都內嵌在這一檔**。分頁：總覽／成長曲線／裝備／時裝／能力配點／技能／HEXA・V／聯盟公會／其他 |
-| `public/config.json` | `characters[{id,name,job,music{title,yt,src}}]`、`loot{people,music}`、`server`、`version`、`repo` |
+| `public/config.json` | `characters[{id,name,job,music{title,yt}}]`、`loot{people,music}`、`server`、`version`、`repo` |
 | `public/data/<id>/profile.json` | `{updated(ms), data:{basic,stat,equip,...}, errors}`，由 fetch-data.js 產生 |
 | `public/data/<id>/history.json` | 經驗歷史 `{points:[{d,lv,rate,exp}], floor}`（成長曲線用） |
 | `fetch-data.js` | 向 Nexon API 抓資料。`node fetch-data.js [id]`；也被 server.js 引用。端點清單在 `ENDPOINTS` |
 | `server.js` | 本機預覽（port 3000）。`POST /api/refresh?c=<id>`（同角色冷卻 2 分鐘）、`GET /api/status?c=<id>`、支援 Range |
 | `public/loot.html` + `public/loot/` | 王團撿寶（併自 jerry900529/who）。Firebase Firestore 即時同步 + 通關密語。`firebase/firestore.rules` 只是備份，不會部署 |
-| `public/player.js` | 右下角背景音樂。`track.yt` 用 YouTube IFrame；`track.src` 是本機音檔（找不到檔就自動隱藏） |
+| `public/player.js` | 右下角背景音樂。`track.yt` 用 YouTube IFrame；`track.src` 是選用的本機音檔（目前沒有任何角色在用，找不到檔會自動隱藏） |
 | `.github/workflows/update.yml` | 每天台灣 01:30 抓資料→commit `public/data`→部署 Pages。也可手動 Run workflow；push 觸發時**不抓資料**只部署 |
 
 ## 常用指令
@@ -26,7 +26,7 @@ git pull --rebase origin main       # push 前必做：GitHub 機器人每天會
 
 ## 不在 git 裡的東西（換電腦要自己補）
 - `.env`：`NEXON_API_KEY=test_...`（Nexon Open API 後台取得）。GitHub 上另有 Secret `NEXON_API_KEY`（Actions 用）。
-- `public/audio/`（楓之谷配樂 mp3，版權因素 gitignore；線上用 YouTube 嵌入）。`images.jpeg`（favicon 原圖，未追蹤）。
+- 音樂全部用 YouTube 嵌入（`config.json` 的 `music.yt`），repo 裡不放配樂檔（`.gitignore` 仍排除 `public/audio/`）。favicon 的原始圖已不在專案內，現有的是去背後的 `favicon.png/.ico`。
 - 遠端 `origin` 是 SSH：`git@github.com:jerry900529/MS.git`，需要該機器的公鑰已加到 GitHub。
 
 ## 設計重點與規則
@@ -42,6 +42,14 @@ git pull --rebase origin main       # push 前必做：GitHub 機器人每天會
 - 開發金鑰額度小：撞到 `OPENAPI00007` 要等；一個角色每次更新約 85 次呼叫，**必須循序且間隔 ~1.5 秒**，不要平行。歷史補抓每次上限 60 筆。
 - **沒有**道具查詢、帳號→角色清單（皆 403 `OPENAPI00002`）。圖示只有角色身上已有的（`open.api.nexon.com/static/maplestorytw/...`）。
 - 歷史資料約半年（更早回傳空值 → 記為 `floor`）。
+
+## 部署（GitHub Pages）與撿寶 Firebase
+- 首次設定：repo 推上 `main` → Settings → Secrets → Actions 新增 `NEXON_API_KEY` → Settings → Pages 的 Source 選 **GitHub Actions** → `config.json` 的 `repo` 填 `jerry900529/MS`（讓按鈕顯示 Actions 連結）。
+- Pages 是靜態空間：網頁上的「重新整理資料」在線上版只會重新載入網站上現有資料；要向 Nexon 抓新資料必須跑 workflow（Actions → Update data & deploy → Run workflow，約 3～10 分鐘）。本機 `node server.js` 的按鈕才會真的呼叫 Nexon。
+- 私有 repo 的 Pages 需付費方案；目前是公開 repo，角色資料（公開遊戲資料）也是公開的。
+- 撿寶頁人名對應：`config.json` 的 `loot.people`（Jerry→jerry、YC→yuming、W10→lushi）。頭像取自站內 API 資料；寶物圖示是 `public/loot/images/` 的圖檔。
+- Firebase 金鑰有 HTTP referrer 限制：原本只允許 `https://jerry900529.github.io/*` 與 `localhost:8000`。本機預覽撿寶頁若連線失敗，改用 `PORT=8000 node server.js`，或到 Google Cloud Console 加上 `http://localhost:3000/*`。
+- 成長曲線歷史：近 30 天每天一點、更早每週一點，往回抓到 API 沒資料為止（約半年）；每次更新只補缺的日期，新角色可能要更新兩三次才補齊。
 
 ## Git／版權
 - commit 結尾加：`Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`。這台機器 git 2.25（不支援 `git init -b`）。
