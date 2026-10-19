@@ -11,6 +11,10 @@
    順序：網址 ?c= → 上次選的角色 → 第一個角色；主題優先用上次快取，其次用內建對照 */
 (function () {
   try {
+    var qq = new URLSearchParams(location.search).get('q');
+    if (qq && qq.trim()) { // 角色查詢：資料全部到齊前只顯示中性的載入畫面，不借用任何角色的主題
+      document.documentElement.className += ' lk-loading'; document.documentElement.dataset.theme = 'loading'; document.title = '查詢中…'; return;
+    }
     var id = new URLSearchParams(location.search).get('c');
     if (!id) { try { id = JSON.parse(localStorage.getItem('who')); } catch (e) {} }
     var T = { jerry: 'nightlord', lushi: 'windarcher', yuming: 'shadower', alucard: 'demonavenger' };
@@ -22,7 +26,7 @@
 <style>
 :root{--bg:#f6f1ea;--bg2:#fffaf2;--card:#ffffff;--ink:#2e2418;--mute:#86745f;--accent:#f08a24;--accent2:#e5533d;--hl:#e5533d;--on-accent:#fff;--line:#eadcc6;--shadow:0 6px 20px #6b4a1f14;
 --chart:#d4501f;--grid:#eadfce;--axis:#86745f;--star:#f2a60c;
---g-rare:#3b9bd9;--g-epic:#a05ad6;--g-uniq:#eba90f;--g-leg:#27b866;
+--g-rare:#a05ad6;--g-epic:#eba90f;--g-uniq:#3b9bd9;--g-leg:#27b866;   /* 稀有＝紫、罕見＝金、特殊＝藍、傳說＝綠（裝備潛能、附加潛能、能力共用） */
 --hero-bg:linear-gradient(120deg,#ff9d2e,#e5533d 60%,#b83a62);--hero-ink:#fff;--deco:none;--emblem:none;--hero-clip:none;
 --exp-a:var(--accent);--exp-b:var(--accent2);--bar:#2e2418;--bar-ink:#f6ead8;--r:16px;--r2:12px;--font:system-ui,"Noto Sans TC","PingFang TC",sans-serif;--font-head:var(--font);--head-ls:.04em;--h1-shadow:0 2px 12px #0003;--h1-case:none}
 *{box-sizing:border-box}html{scroll-behavior:smooth;font-size:112.5%;-webkit-text-size-adjust:100%}
@@ -112,7 +116,6 @@ h2 small{font-weight:400;color:var(--mute);font-size:.8rem}
 .btn.on,.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .g-稀有{--gc:var(--g-rare)}.g-罕見{--gc:var(--g-epic)}.g-特殊{--gc:var(--g-uniq)}.g-傳說{--gc:var(--g-leg)}
 .gt-稀有{color:var(--g-rare)}.gt-罕見{color:var(--g-epic)}.gt-特殊{color:var(--g-uniq)}.gt-傳說{color:var(--g-leg)}
-.ag-傳說{color:var(--g-leg)}.ag-罕見{color:var(--g-uniq)}.ag-稀有{color:var(--g-epic)}.ag-特殊{color:var(--g-rare)}
 
 /* equipment */
 .eqs{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
@@ -191,9 +194,42 @@ footer{text-align:center;color:var(--mute);font-size:.78rem;padding:28px 0 40px}
 [data-theme=demonavenger] .card{border-left:3px solid var(--accent)}
 [data-theme=demonavenger] h2:before{box-shadow:0 0 10px var(--accent)}
 @media(max-width:560px){.hero .cp{margin-left:0;width:100%}.avatar{width:130px;height:130px}}
+/* 角色查詢載入畫面：中性配色，資料到齊、職業主題套用完才揭曉，避免被誤會成角色本身的美術色 */
+#lkLoad{display:none;position:fixed;inset:0;z-index:1000;place-items:center;padding:24px;background:radial-gradient(900px 500px at 50% 35%,#1b2230,#0c0f15 70%);color:#dfe6f2;font-family:system-ui,"Noto Sans TC","PingFang TC",sans-serif;text-align:center}
+html.lk-loading #lkLoad{display:grid}html.lk-loading body{overflow:hidden}
+html.lk-loading body>*:not(#lkLoad):not(#qDlg){visibility:hidden}
+html.lk-loading #qDlg{--card:#151b27;--bg:#0c0f15;--ink:#dfe6f2;--mute:#98a5bb;--line:#2a3447;--accent:#9fb4d0;--on-accent:#0c0f15;--r:14px;--r2:10px}
+#lkLoad .lk-card{max-width:420px}#lkLoad h1{margin:18px 0 6px;font-size:1.7rem;word-break:break-all;color:#fff}#lkLoad p{margin:6px 0;color:#98a5bb;line-height:1.7;font-size:.95rem}
+#lkLoad .lk-spin{width:54px;height:54px;margin:0 auto;border-radius:50%;border:4px solid #ffffff22;border-top-color:#9fb4d0;animation:lkspin 1s linear infinite}
+#lkLoad .lk-ico{font-size:2.6rem}#lkLoad[data-err] .lk-spin{display:none}#lkLoad:not([data-err]) .lk-ico,#lkLoad:not([data-err]) .lk-act{display:none}
+#lkLoad .lk-act{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+#lkLoad .lk-act button,#lkLoad .lk-act a{font:inherit;font-weight:650;color:#dfe6f2;background:#ffffff14;border:1px solid #ffffff33;border-radius:10px;padding:9px 18px;cursor:pointer;text-decoration:none}
+#lkLoad .lk-act button:hover,#lkLoad .lk-act a:hover{border-color:#9fb4d0}
+@keyframes lkspin{to{transform:rotate(360deg)}}@keyframes lkfade{from{opacity:0}to{opacity:1}}
+html.lk-reveal body>*:not(#lkLoad){animation:lkfade .5s ease both}
+@media(prefers-reduced-motion:reduce){#lkLoad .lk-spin{animation-duration:3s}html.lk-reveal body>*:not(#lkLoad){animation:none}}
 </style>
 </head>
 <body>
+<div id="lkLoad" role="status" aria-live="polite"><div class="lk-card">
+  <div class="lk-spin"></div><div class="lk-ico">⚠️</div>
+  <h1 id="lkName"></h1><p id="lkMsg"></p>
+  <div class="lk-act"><button type="button" id="lkRetry">🔍 重新查詢</button><a href="./">回到我的角色</a></div>
+</div></div>
+<script>
+(function(){
+  var h=document.documentElement,L=document.getElementById('lkLoad'),m=document.getElementById('lkMsg'),t0=Date.now(),tm;
+  var q=(new URLSearchParams(location.search).get('q')||'').trim();document.getElementById('lkName').textContent=q;
+  function tick(){m.innerHTML='正在向 Nexon 查詢角色資料…<br>第一次查詢約需 5–10 秒（已等待 '+Math.floor((Date.now()-t0)/1000)+' 秒）'}
+  if(h.classList.contains('lk-loading')){tick();tm=setInterval(tick,1000)}
+  window.lkFail=function(msg){clearInterval(tm);L.setAttribute('data-err','');document.title='查詢失敗';m.textContent=msg;h.classList.add('lk-loading')};
+  window.lkDone=function(){clearInterval(tm);h.classList.remove('lk-loading');h.classList.add('lk-reveal');scrollTo(0,0)};
+  document.getElementById('lkRetry').onclick=function(){var b=document.getElementById('qBtn');b&&b.click()};
+  // 顯示資料時若發生未預期的錯誤，不要卡在載入畫面
+  addEventListener('error',function(){if(h.classList.contains('lk-loading')&&!L.hasAttribute('data-err'))window.lkFail('顯示資料時發生錯誤，請重新整理後再試')});
+  addEventListener('unhandledrejection',function(){if(h.classList.contains('lk-loading')&&!L.hasAttribute('data-err'))window.lkFail('顯示資料時發生錯誤，請重新整理後再試')});
+})();
+</script>
 <div class="topbar"><div class="wrap"><span class="brand">MAPLESTORY · TMS</span><span class="spacer"></span><button type="button" class="toplink" id="qBtn" hidden aria-label="角色查詢">🔍<span class="tl"> 角色查詢</span></button><button type="button" class="toplink" id="logBtn" aria-label="更新日誌">📝<span class="tl"> 更新日誌</span> <small id="logVer"></small></button><a class="toplink" href="loot.html" aria-label="王團撿寶">⚔<span class="tl"> 王團撿寶</span></a><label>角色<select id="who" aria-label="切換角色"></select></label></div></div>
 <header class="hero"><div class="wrap">
   <div class="avatar" id="avatar">🍁</div>
@@ -478,7 +514,7 @@ const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Bo
   $('name').textContent=cur.name;$('tagline').textContent=cur.job;
   $('chips').innerHTML=`<span>${esc(cfg.server)}</span><span>版本 ${esc(cfg.version)}</span>`;
   let d;
-  if(LQ){$('refreshRow').style.display='none';$('msg').innerHTML='<div class="stamp"><span>🔍 查詢「'+esc(LQ)+'」中…第一次查詢約需 5–10 秒</span></div>'}
+  if(LQ)$('refreshRow').style.display='none';
   try{
     if(LQ){
       if(!LAPI)throw new Error('這個網站還沒有設定查詢服務');
@@ -487,7 +523,7 @@ const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Bo
       const c=await r.json();d={...c.data,_updated:c.updated,_errors:c.errors};
     }else{
       const r=await fetch(`data/${cur.id}/profile.json?t=`+Date.now());if(!r.ok)throw new Error('這個角色的資料還沒抓取完成，請稍後按「重新整理資料」');const c=await r.json();d={...c.data,_updated:c.updated,_errors:c.errors}}}
-  catch(e){$('msg').innerHTML=`<span class="err">${esc(e.message)}</span>${LQ?' <a href="./">回到我的角色</a>':''}`;if(LQ)window.MusicPlayer?.set(cur.music);return}
+  catch(e){if(LQ){window.lkFail(e.message);return}$('msg').innerHTML=`<span class="err">${esc(e.message)}</span>`;return}
 
   window.__updated=d._updated;const b=d.basic||{},s=d.stat||{};setTheme(b.character_class||cur.job);
   const fs=s.final_stat||[];const f=n=>fs.find(x=>x.stat_name===n)?.stat_value;
@@ -556,7 +592,7 @@ const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Bo
   function pickAb(n){
     const p=n===0?{ability_info:AB.ability_info,ability_grade:AB.ability_grade}:AB['ability_preset_'+n];
     tabBtns($('abTabs'),[[0,`使用中（預設 ${AB.preset_no}）`],...[1,2,3].filter(x=>AB['ability_preset_'+x]).map(x=>[x,'預設 '+x])],n,pickAb);
-    $('ability').innerHTML=lis((p?.ability_info||[]).map(a=>`<b class="ag-${esc(a.ability_grade)}">${esc(a.ability_grade)}</b>　${esc(a.ability_value)}`));
+    $('ability').innerHTML=lis((p?.ability_info||[]).map(a=>`<b class="gt-${esc(a.ability_grade)}">${esc(a.ability_grade)}</b>　${esc(a.ability_value)}`));
   }
   pickAb(0);
   const H=d.hyper||{};
@@ -625,6 +661,7 @@ const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Bo
       ${au.skill_1?`<p><span class="mute">自動技能</span> ${[au.skill_1,au.skill_2].filter(Boolean).map(esc).join('、')}</p>`:''}
       ${(g('skill')||[]).length?`<p><span class="mute">技能</span> ${g('skill').map(x=>`<span class="tag">${esc(x)}</span>`).join('')}</p>`:''}
       ${(g('potential')||[]).filter(p=>p.potential_type).map(p=>`<p><span class="mute">潛能 ${esc(p.potential_step)}階</span> ${esc(p.potential_type)} +${esc(p.potential_increase1)}${p.potential_increase2?`/${esc(p.potential_increase2)}`:''}</p>`).join('')}</div>`}).join('')||'<p class="note">暫無資料</p>';
+  if(LQ&&window.lkDone)window.lkDone();   // 查詢模式：資料與職業主題都就緒才揭曉
 
 })();
 </script>
