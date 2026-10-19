@@ -55,6 +55,7 @@ const ENDPOINTS = {
   raider: '/user/union-raider',
   union: '/user/union',
   artifact: '/user/union-artifact',
+  champion: '/user/union-champion',
 };
 
 function readCache(id) {

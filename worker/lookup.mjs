@@ -11,7 +11,7 @@ const ENDPOINTS = {
   hexa: '/character/hexamatrix', hexaStat: '/character/hexamatrix-stat', vmatrix: '/character/vmatrix',
   skill5: ['/character/skill', { character_skill_grade: '5' }], skill6: ['/character/skill', { character_skill_grade: '6' }],
   dojang: '/character/dojang', cash: '/character/cashitem-equipment', beauty: '/character/beauty-equipment',
-  raider: '/user/union-raider', union: '/user/union', artifact: '/user/union-artifact',
+  raider: '/user/union-raider', union: '/user/union', artifact: '/user/union-artifact', champion: '/user/union-champion',
 };
 const CONCURRENCY = 3;          // 開發金鑰每秒 5 次：同時 3 條、遇到 OPENAPI00007 就等一下重試
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

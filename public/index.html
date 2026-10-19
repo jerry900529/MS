@@ -46,6 +46,7 @@ b{font-weight:650}
 #qDlg form{display:flex;gap:8px;margin:14px 0 6px}#qDlg input{flex:1;min-width:0;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:var(--r2);padding:10px 14px;font:inherit}#qDlg input:focus{outline:2px solid var(--accent);border-color:transparent}
 #qDlg .go{background:var(--accent);color:var(--on-accent);border:0;border-radius:var(--r2);padding:0 18px;font:inherit;font-weight:700;cursor:pointer}#qDlg .go:disabled{opacity:.6;cursor:wait}
 #qDlg .hint{color:var(--mute);font-size:.82rem;line-height:1.6;margin:4px 0}#qDlg .rc{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}#qDlg .rc button{background:var(--bg);border:1px solid var(--line);color:var(--ink);border-radius:99px;padding:4px 12px;font:inherit;font-size:.82rem;cursor:pointer}#qDlg .rc button:hover{border-color:var(--accent)}
+#qDlg{width:min(680px,calc(100vw - 32px))}#qDlg .bd{padding:10px 26px 26px}#qDlg form{gap:12px;margin:18px 0 12px}#qDlg input{padding:15px 18px;font-size:1.15rem}#qDlg .go{padding:0 28px;font-size:1.05rem}#qDlg .hint{font-size:.95rem;line-height:1.75;margin:8px 0}#qDlg .rc{gap:10px;margin-top:16px}#qDlg .rc button{padding:7px 16px;font-size:.95rem}#qDlg .hd{padding:18px 26px}#qDlg .hd b{font-size:1.2rem}
 #logDlg .bd{padding:6px 18px 18px}#logDlg h4{margin:16px 0 6px;font-size:1rem}#logDlg h4 span{color:var(--mute);font-weight:400;font-size:.8rem;margin-left:8px}
 #logDlg ul{margin:0;padding:0;list-style:none}#logDlg li{display:flex;gap:8px;padding:4px 0;font-size:.88rem;line-height:1.5}#logDlg li .tag{flex:none;height:1.4em;margin:2px 0 0}
 .topbar .toplink{white-space:nowrap;flex:none}.topbar label{min-width:0}
@@ -305,6 +306,7 @@ html.lk-reveal body>*:not(#lkLoad){animation:lkfade .5s ease both}
     <div style="margin-top:14px" class="two"><div class="card" style="grid-column:1/-1"><h3>聯盟攻擊隊效果</h3><ul class="list" id="raider"></ul></div><div class="card" style="grid-column:1/-1"><h3>占領效果</h3><ul class="list" id="occupied"></ul></div></div>
     <div class="two" style="margin-top:14px"><div class="card"><h3>內部效果</h3><ul class="list" id="inner"></ul></div><div class="card"><h3>聯盟成員（角色方塊）</h3><ul class="list" id="blocks"></ul></div></div>
     <h2>神器</h2><div class="two"><div class="card"><h3>神器效果</h3><ul class="list" id="artEffect"></ul></div><div class="card"><h3>神器水晶</h3><ul class="list" id="artCrystal"></ul></div></div>
+    <h2>聯盟冠軍</h2><div class="two"><div class="card"><h3>冠軍角色</h3><ul class="list" id="champ"></ul></div><div class="card"><h3>徽章總加成</h3><ul class="list" id="champTotal"></ul></div></div>
     <h2>公會</h2><div class="grid" id="guildCards"></div>
     <div class="two" style="margin-top:14px"><div class="card"><h3>公會技能</h3><ul class="list" id="gSkill"></ul></div><div class="card"><h3>貴族技能</h3><ul class="list" id="gNoble"></ul></div></div>
   </div>
@@ -640,6 +642,9 @@ const potLine=(g,a)=>g?`<p><b class="gt-${esc(g)}">${esc(g)}</b>　${a.filter(Bo
   $('blocks').innerHTML=lis(rd?.union_block?.map(x=>`<b>${esc(x.block_class)}</b> <span class="tag">Lv.${esc(x.block_level)}</span> <span class="mute">${esc(x.block_type)}</span>`));
   $('artEffect').innerHTML=lis(ar?.union_artifact_effect?.map(x=>`${esc(x.name)} <span class="tag">Lv.${x.level}</span>`));
   $('artCrystal').innerHTML=lis(ar?.union_artifact_crystal?.map(x=>`<b>${esc(x.name)}</b> <span class="tag">Lv.${x.level}</span><br><span class="mute">${[x.crystal_option_name_1,x.crystal_option_name_2,x.crystal_option_name_3].filter(Boolean).map(esc).join('・')}</span>`));
+  const ch=d.champion;
+  $('champ').innerHTML=lis(ch?.union_champion?.map(x=>`<b>${esc(x.champion_name)}</b> <span class="tag">${esc(x.champion_grade)}</span> <span class="mute">${esc(x.champion_class)}・欄位 ${esc(x.champion_slot)}</span><br><span class="mute">${(x.champion_badge_info||[]).map(b=>esc(b.stat)).join('<br>')}</span>`));
+  $('champTotal').innerHTML=lis(ch?.champion_badge_total_info?.map(x=>esc(x.stat)));
   $('guildCards').innerHTML=g?stat('公會',esc(g.guild_name),'hl')+stat('等級','Lv.'+g.guild_level)+stat('人數',g.guild_member_count)+stat('公會長',esc(g.guild_master_name))+stat('名聲',num(g.guild_fame))+stat('公會點數',num(g.guild_point)):'<p class="note">暫無資料</p>';
   $('gSkill').innerHTML=lis(g?.guild_skill?.map(x=>`<b>${esc(x.skill_name)}</b> <span class="tag">Lv.${x.skill_level}</span><br><span class="mute">${esc(x.skill_effect)}</span>`));
   $('gNoble').innerHTML=lis(g?.guild_noblesse_skill?.map(x=>`<b>${esc(x.skill_name)}</b> <span class="tag">Lv.${x.skill_level}</span><br><span class="mute">${esc(x.skill_effect)}</span>`));
