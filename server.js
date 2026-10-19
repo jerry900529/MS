@@ -16,12 +16,28 @@ const log = (m) => console.log(m);
 const stale = () => characters().filter((c) => Date.now() - readCache(c.id).updated > REFRESH_MS).map((c) => c.id);
 const sweep = () => { const ids = stale(); if (ids.length && !sweeping) { sweeping = true; refreshAll(ids, log).finally(() => { sweeping = false; }); } };
 let sweeping = false;
+const lookups = new Map(); // 查詢結果快取 6 小時，和 Worker 的行為一致
+async function lookupCached(name) {
+  const { run, NAME_RE } = await import('./worker/lookup.mjs');
+  if (!NAME_RE.test(name)) return { status: 400, body: { error: 'bad_name' } };
+  const hit = lookups.get(name);
+  if (hit && Date.now() - hit.t < 6 * 3600e3) return hit.r;
+  const r = await run(name, process.env.NEXON_API_KEY);
+  if (r.status === 200) lookups.set(name, { t: Date.now(), r });
+  return r;
+}
+
 
 if (hasKey()) { sweep(); setInterval(sweep, 600000); }
 
 http.createServer((req, res) => {
   const u = new URL(req.url, 'http://x');
   const id = u.searchParams.get('c') || characters()[0]?.id;
+  if (u.pathname === '/api/lookup') { // 角色查詢（本機測試；線上版由 Cloudflare Worker 提供，見 worker/）
+    const name = (u.searchParams.get('name') || '').trim();
+    if (!hasKey()) return json(res, 503, { error: 'no_key' });
+    return lookupCached(name).then((r) => json(res, r.status, r.body));
+  }
   if (u.pathname === '/api/status') return json(res, 200, { refreshing: isRunning(id), updated: readCache(id).updated });
   if (u.pathname === '/api/refresh' && req.method === 'POST') {
     if (!hasKey()) return json(res, 503, { error: '尚未設定 NEXON_API_KEY' });

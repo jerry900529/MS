@@ -1,0 +1,7 @@
+name = "tms-lookup"
+main = "lookup.mjs"
+compatibility_date = "2025-01-01"
+
+[vars]
+# 允許呼叫的網站（用逗號分隔）。要在本機測試 Worker 可加上 http://localhost:3000
+ALLOW_ORIGIN = "https://jerry900529.github.io"

@@ -13,6 +13,11 @@
 | `fetch-data.js` | 向 Nexon API 抓資料。`node fetch-data.js [id]`；也被 server.js 引用。端點清單在 `ENDPOINTS` |
 | `server.js` | 本機預覽（port 3000）。`POST /api/refresh?c=<id>`（同角色冷卻 2 分鐘）、`GET /api/status?c=<id>`、支援 Range |
 | `public/loot.html` + `public/loot/` | 王團撿寶（併自 jerry900529/who）。Firebase Firestore 即時同步 + 通關密語。`firebase/firestore.rules` 只是備份，不會部署 |
+| `worker/lookup.mjs` | 角色查詢（`?q=角色名稱`）。同一份程式：Cloudflare Worker（金鑰在 Secret）＋本機 `server.js` 的 `/api/lookup`。約 27 次 API 呼叫、6～10 秒，快取 6 小時。線上版靠 `config.json` 的 `lookupApi`（已部署：`https://tms-lookup.jerry900529.workers.dev`）；改了 `worker/` 要重新 `cd worker && npx wrangler deploy`，部署步驟見 `worker/README.md` |
+| `public/jobtheme.js` | 查詢模式專用的職業主題產生器：`J` 表是「職業名→{深/淺色, 主色, 副色, 頂部漸層, 圖樣}」，缺的職業會用名稱算固定色。4 個手工主題仍在 index.html。新增/修正職業配色改 `J` 即可（職業名是 API 的 `character_class`，用 includes 比對） |
+| `public/hexacost.js` | HEXA 各核心升級所需靈魂艾爾達／碎片的固定費用表（API 不提供）＋ `HexaCost.analyze()`。遊戲改版（費用或核心數變動）時要更新這張表 |
+| `public/changelog.json` | 更新日誌（右上角「更新日誌」按鈕）。**每次改動都要新增一筆版本**（V001 是下載時的初始版，V002 起依序遞增，新的放最前面） |
+| `music-list.txt` + `sync-music.js` | 背景音樂曲庫來源（名稱｜YouTube ID）。改完名稱 `node sync-music.js` → 寫入 `config.json` 的 `musicLibrary` |
 | `public/player.js` | 右下角背景音樂。`track.yt` 用 YouTube IFrame；`track.src` 是選用的本機音檔（目前沒有任何角色在用，找不到檔會自動隱藏） |
 | `.github/workflows/update.yml` | 每天台灣 01:30 抓資料→commit `public/data`→部署 Pages。也可手動 Run workflow；push 觸發時**不抓資料**只部署 |
 
