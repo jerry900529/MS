@@ -24,6 +24,10 @@
   .bgm .t{display:flex;flex-direction:column;min-width:0}.bgm .t small{font-weight:400;opacity:.65;font-size:.72rem;letter-spacing:.08em}
   .bgm .t b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:9em}
   .bgm input[type=range]{width:84px;accent-color:var(--accent,#4de1ff);cursor:pointer}
+  /* 頻譜條：YouTube 內嵌無法讀取實際音訊，這是播放中的模擬律動（低音區跟著節拍、高音區快速閃動） */
+  .bgm .eq{display:flex;align-items:flex-end;gap:2px;height:24px;flex:none}
+  .bgm .eq i{width:3px;height:100%;border-radius:2px;background:var(--accent,#4de1ff);transform-origin:bottom;transform:scaleY(.12);opacity:.9}
+  @media(prefers-reduced-motion:reduce){.bgm .eq{display:none}}
   .bgm.hint .pp{animation:bgmpulse 1.6s infinite}
   @keyframes bgmpulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent,#4de1ff) 70%,transparent)}100%{box-shadow:0 0 0 16px transparent}}
   /* 影片面板：收合時移出畫面但維持 200x200 以上的尺寸；展開時顯示在控制列上方 */
@@ -53,6 +57,7 @@
     + '<div class="vid"><div id="bgm-yt"></div></div>'
     + '<div class="ctl"><button type="button" class="pp" aria-label="播放音樂">▶</button>'
     + '<button type="button" class="tg pv" aria-label="上一首" title="上一首">⏮</button><button type="button" class="tg nx" aria-label="下一首" title="下一首">⏭</button>'
+    + '<div class="eq" aria-hidden="true">' + '<i></i>'.repeat(8) + '</div>'
     + '<div class="t"><small>BGM</small><b></b></div>'
     + '<input type="range" min="0" max="1" step="0.01" aria-label="音量">'
     + '<button type="button" class="tg md" aria-label="播放模式" title="播放模式"></button>'
@@ -72,8 +77,33 @@
   md.onclick = () => { mode = MODES[(MODES.findIndex((m) => m[0] === mode) + 1) % MODES.length][0]; LS.set('bgm_mode', mode); showMode(); };
   showMode();
 
+  /* ---- 頻譜條（模擬律動） ---- */
+  const bars = [...$q('.eq').children], lv = bars.map(() => 0.12);
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let eqRaf = 0, eqLast = 0, kick = 0, nextKick = 0;
+  function eqFrame(t) {
+    eqRaf = requestAnimationFrame(eqFrame);
+    const dt = Math.min(0.05, (t - eqLast) / 1000 || 0.016); eqLast = t;
+    if (t >= nextKick) { kick = 0.7 + Math.random() * 0.3; nextKick = t + 380 + Math.random() * 220; }
+    kick = Math.max(0, kick - dt * 2.6);
+    bars.forEach((b, i) => {
+      const f = i / (bars.length - 1);                       // 0 = 低音，1 = 高音
+      const wob = 0.5 + 0.5 * Math.sin(t / 1000 * (2 + f * 9) + i * 1.7);
+      const target = Math.min(1, 0.12 + (1 - f) * kick * 0.75 + wob * (0.15 + f * 0.35) * (0.5 + Math.random() * 0.5));
+      lv[i] += (target - lv[i]) * Math.min(1, dt * (target > lv[i] ? 28 : 7));
+      b.style.transform = `scaleY(${lv[i].toFixed(3)})`;
+    });
+  }
+  function eqSet(on) {
+    on = on && !document.hidden && !reduceMotion.matches;
+    if (on && !eqRaf) { eqLast = performance.now(); eqRaf = requestAnimationFrame(eqFrame); }
+    else if (!on && eqRaf) { cancelAnimationFrame(eqRaf); eqRaf = 0; bars.forEach((b, i) => { lv[i] = 0.12; b.style.transform = ''; }); }
+  }
+  document.addEventListener('visibilitychange', () => eqSet(!!eng && eng.playing()));
+
   const ui = () => {
     const p = !!eng && eng.playing();
+    eqSet(p);
     pp.textContent = p ? '❚❚' : '▶'; pp.setAttribute('aria-label', p ? '暫停音樂' : '播放音樂');
     box.classList.toggle('hint', !p && LS.get('bgm_on', '1') !== '0');
   };
