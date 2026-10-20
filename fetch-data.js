@@ -98,7 +98,7 @@ function refresh(id) {
   const p = (async () => {
     const f = files(id), prev = readCache(id);
     const { ocid } = await nexon('/id', { character_name: ch.name });
-    const date = new Date(Date.now() - 86400000).toISOString().slice(0, 10); // 官方資料每日更新，取昨日
+    const date = new Date(Date.now() + 8 * 3600000 - 86400000).toISOString().slice(0, 10); // 官方資料每日更新，取台北時間的昨日
     const next = { ...prev.data, name: ch.name, date };
     const errors = {};
     for (const [k, def] of Object.entries(ENDPOINTS)) {
