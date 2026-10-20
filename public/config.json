@@ -8,8 +8,8 @@
       "name": "花心傑睿",
       "job": "夜使者",
       "music": {
-        "title": "墮落城市",
-        "yt": "t3AfgamDW9M"
+        "title": "地球防衛總部吹笛版",
+        "yt": "qm6CIm7rNlY"
       }
     },
     {
@@ -475,6 +475,10 @@
     {
       "title": "武陵道場",
       "yt": "DsolQzFpA84"
+    },
+    {
+      "title": "地球防衛總部吹笛版",
+      "yt": "qm6CIm7rNlY"
     }
   ],
   "lookupApi": "https://tms-lookup.jerry900529.workers.dev"
