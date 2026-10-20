@@ -5,4 +5,6 @@
 - 原因：原本用 UTC 計算，排程在台灣凌晨執行時會抓到前天的資料，網頁資料落後兩天。
 - 新增：音樂曲庫加入「地球防衛總部吹笛版」（qm6CIm7rNlY），並設為花心傑睿的預設音樂。
 - 修正：曲庫三首瑞恩相關曲目名稱開頭多餘的「－」已移除。
+- 新增：英文歌單 208 首（來源為 Classic MapleStory BGM 歌單，已去掉 `[MapleStory BGM]` 前綴），與中文歌單分區顯示在同一份曲目清單。新增 `music-list-en.txt`，`sync-music.js` 同步寫入 `config.json` 的 `musicLibraryEn`，`player.js` 上下首與隨機只在同一歌單內輪播。
+- 原因：英文曲名無法對應台服中文名稱，分成兩個歌單可避免中英混雜與重複。
 - 同步在 `public/changelog.json` 新增 V004。

@@ -481,5 +481,839 @@
       "yt": "qm6CIm7rNlY"
     }
   ],
-  "lookupApi": "https://tms-lookup.jerry900529.workers.dev"
+  "lookupApi": "https://tms-lookup.jerry900529.workers.dev",
+  "musicLibraryEn": [
+    {
+      "title": "Night Market",
+      "yt": "-sf4tEqd7co"
+    },
+    {
+      "title": "Temple of Time",
+      "yt": "6uCaEDM-Kf8"
+    },
+    {
+      "title": "Ellinia: Missing You",
+      "yt": "2NoF8PHQJqQ"
+    },
+    {
+      "title": "Ereve: Raindrop Flower",
+      "yt": "DhUdOO9UNwY"
+    },
+    {
+      "title": "Lith Harbor: Above the Treetops",
+      "yt": "F6LIFBVhObQ"
+    },
+    {
+      "title": "Ellinia: When the Morning Comes",
+      "yt": "gfgBDs8z6WE"
+    },
+    {
+      "title": "Ludibrium: Fantasia",
+      "yt": "v-GtLObPoto"
+    },
+    {
+      "title": "Ellinia: Moonlight Shadow",
+      "yt": "XYtHWyrVm30"
+    },
+    {
+      "title": "Ludibrium: Wherever You Are",
+      "yt": "iHbjhiWic0U"
+    },
+    {
+      "title": "Orbis: Upon the Sky",
+      "yt": "fTYJEdEcTbA"
+    },
+    {
+      "title": "Kerning Square",
+      "yt": "_0qKfYQG7Rs"
+    },
+    {
+      "title": "Happyville: White Christmas",
+      "yt": "IzzDrEuFpnE"
+    },
+    {
+      "title": "Temple of Time: Remembrance",
+      "yt": "TpKE4mKFSZY"
+    },
+    {
+      "title": "Ereve: Queen's Garden",
+      "yt": "3r9s43TG9yA"
+    },
+    {
+      "title": "Orbis: Come with Me",
+      "yt": "sNCwJu5Buz0"
+    },
+    {
+      "title": "Ludibrium: Flying in a Blue Dream",
+      "yt": "UywGQsCoj8c"
+    },
+    {
+      "title": "El Nath: Snowy Village",
+      "yt": "X6X7U5V9Obk"
+    },
+    {
+      "title": "Kerning City: Bad Guys",
+      "yt": "uv8QObpL2EY"
+    },
+    {
+      "title": "Ludibrium: Fairytale",
+      "yt": "0_PTb2pxygU"
+    },
+    {
+      "title": "Temple of Time: Repentance",
+      "yt": "3loq0xBsi7o"
+    },
+    {
+      "title": "Ludibrium: Fairytale (Faster)",
+      "yt": "7PO-m2atU2U"
+    },
+    {
+      "title": "Orbis: Tower of Goddess",
+      "yt": "UEByqQPt2is"
+    },
+    {
+      "title": "El Nath: Warm Regard",
+      "yt": "MBmPOY2PA2Q"
+    },
+    {
+      "title": "China: Go Shanghai",
+      "yt": "xPtgIjPQqe4"
+    },
+    {
+      "title": "Ellin Forest",
+      "yt": "8FShyABhIAs"
+    },
+    {
+      "title": "Henesys: Floral Life",
+      "yt": "s2_MAplvHeQ"
+    },
+    {
+      "title": "Ludibrium: High Enough",
+      "yt": "iqWeh-dkwu4"
+    },
+    {
+      "title": "Orbis: Shinin' Harbor",
+      "yt": "DThWMbPZXy8"
+    },
+    {
+      "title": "Sleepywood",
+      "yt": "tWCWIhA3XQw"
+    },
+    {
+      "title": "Aquarium",
+      "yt": "qtw0sIBLjrw"
+    },
+    {
+      "title": "Aqua Road: Shining Sea",
+      "yt": "3jdRxzy3K9s"
+    },
+    {
+      "title": "Leafre",
+      "yt": "theIdIhZzVE"
+    },
+    {
+      "title": "Henesys: Rest N Peace",
+      "yt": "SQRqz1D3Xm8"
+    },
+    {
+      "title": "Ludibrium: Timeless",
+      "yt": "95a3-2TsrrA"
+    },
+    {
+      "title": "China: Go Shanghai (Original Version)",
+      "yt": "uZ3egkrlMZY"
+    },
+    {
+      "title": "Temple of Time: Forgetfulness",
+      "yt": "mPdotLdAe7k"
+    },
+    {
+      "title": "Ludibrium: Fantastic Thinking",
+      "yt": "49AZqVhXVeU"
+    },
+    {
+      "title": "Ariant",
+      "yt": "w1RgDSoOajw"
+    },
+    {
+      "title": "Title",
+      "yt": "BVSPMg-GWDc"
+    },
+    {
+      "title": "Leafre: Dragon Nest",
+      "yt": "Dsis2wyHQD0"
+    },
+    {
+      "title": "Magatia: Dispute",
+      "yt": "5FDFLwPw0bU"
+    },
+    {
+      "title": "Ludibrium: Funny Time Maker",
+      "yt": "JSPCrPrepRE"
+    },
+    {
+      "title": "Rien: Crystal Cave",
+      "yt": "Wr21LZPVPrw"
+    },
+    {
+      "title": "Aqua Dungeon: Deep Sea",
+      "yt": "qc5Qqw7ABAU"
+    },
+    {
+      "title": "Korean Folk Town: Downtown",
+      "yt": "KK_IjvtszTA"
+    },
+    {
+      "title": "Aqua Road: Blue World",
+      "yt": "EnHRl2Wnabk"
+    },
+    {
+      "title": "Maple Island: First Step Master",
+      "yt": "ePUZA7yRJVM"
+    },
+    {
+      "title": "Leafre: Minar's Dream",
+      "yt": "07a-UZLcxhM"
+    },
+    {
+      "title": "Crimsonwood Keep Interior",
+      "yt": "qbY2KUn3dmM"
+    },
+    {
+      "title": "Showa: Battlefield",
+      "yt": "ZDS4Dd7ULvM"
+    },
+    {
+      "title": "Mushroom Shrine: Feeling",
+      "yt": "SdcsTuVLJk0"
+    },
+    {
+      "title": "Ludibrium: Time Attack",
+      "yt": "AiaV9gA3i10"
+    },
+    {
+      "title": "Amoria",
+      "yt": "hCdooZxzISo"
+    },
+    {
+      "title": "Korean Folk Town: Dark Mountain",
+      "yt": "YUeCX11El2s"
+    },
+    {
+      "title": "Mu Lung Hill",
+      "yt": "2VMCpGe9MGc"
+    },
+    {
+      "title": "Ludibrium: Timeless B",
+      "yt": "PmuoAR2ce3o"
+    },
+    {
+      "title": "Nautilus",
+      "yt": "iZaVKkfuD6s"
+    },
+    {
+      "title": "Rien Village",
+      "yt": "YDfIfL_Fxec"
+    },
+    {
+      "title": "Showa: Yume",
+      "yt": "58QPkwCSd4Y"
+    },
+    {
+      "title": "Ximending: Yo Taipei",
+      "yt": "Z1_N3UkmaMM"
+    },
+    {
+      "title": "New Leaf City: Town",
+      "yt": "EXv5madDarI"
+    },
+    {
+      "title": "Neo City: Tera Forest / Neo Tokyo: Kamuna",
+      "yt": "BB1l4zunOVU"
+    },
+    {
+      "title": "Herb Town: White Herb",
+      "yt": "59oze7IkQ10"
+    },
+    {
+      "title": "Mu Lung Forest",
+      "yt": "OweBGLQHWaA"
+    },
+    {
+      "title": "Mushroom Castle / Blue Sky",
+      "yt": "ClLLtA3naSo"
+    },
+    {
+      "title": "Orbis: Arab Pirate",
+      "yt": "PZLLGX6VNgU"
+    },
+    {
+      "title": "Horntail",
+      "yt": "WnLrTMmnyBc"
+    },
+    {
+      "title": "Henesys: Cava Bien",
+      "yt": "ddd2MInZXUU"
+    },
+    {
+      "title": "Singapore: CBD Field",
+      "yt": "MvheqAmubR8"
+    },
+    {
+      "title": "Dragon Dream",
+      "yt": "mM_27SaY7tE"
+    },
+    {
+      "title": "Temple of Time: Fighting Pink Bean",
+      "yt": "Mt8ZlyYA4GI"
+    },
+    {
+      "title": "Leafre: Ancient Forest",
+      "yt": "pWi9HXGWn2k"
+    },
+    {
+      "title": "Temple of Time: Dusk of God",
+      "yt": "c851KzZNXkg"
+    },
+    {
+      "title": "Sleepywood: Ancient Move",
+      "yt": "w9HagZ099c0"
+    },
+    {
+      "title": "Ninja Castle: Castle Outside",
+      "yt": "6yJ3_i6emNw"
+    },
+    {
+      "title": "Kerning City: Jungle Book",
+      "yt": "YYTuDFsvZNU"
+    },
+    {
+      "title": "Singapore: Boat Quay Town",
+      "yt": "GSDD0c_7FV0"
+    },
+    {
+      "title": "Kerning Square Field",
+      "yt": "hKYODtn_P84"
+    },
+    {
+      "title": "Florina Beach: Beachway",
+      "yt": "9VqPnUL9Qvs"
+    },
+    {
+      "title": "Perion: Nightmare",
+      "yt": "9lwOsX763N0"
+    },
+    {
+      "title": "Rien: Snow Drop",
+      "yt": "531E1H-sdSo"
+    },
+    {
+      "title": "Ariant: Sunset Desert",
+      "yt": "L9CYYgoZVAo"
+    },
+    {
+      "title": "Omega Sector: Let's March",
+      "yt": "LxQt8EVhBOs"
+    },
+    {
+      "title": "Ariant: Hot Desert",
+      "yt": "q9swmo6309U"
+    },
+    {
+      "title": "Night Market Field",
+      "yt": "_-O1vvrWOZU"
+    },
+    {
+      "title": "Ludibrium: The Grotesque Way",
+      "yt": "5Uu68ZwkzrM"
+    },
+    {
+      "title": "Amorian Challenge",
+      "yt": "fetvn2jzc9Q"
+    },
+    {
+      "title": "Perion: Water Way",
+      "yt": "Su6P7juLavE"
+    },
+    {
+      "title": "Kerning City: Subway",
+      "yt": "J1YTQvtmsjg"
+    },
+    {
+      "title": "Sleepywood: Evil Eyes",
+      "yt": "N49FmJJnfy0"
+    },
+    {
+      "title": "Neo City: Air Battleship Hermes / Neo Tokyo: Tokyo Sky",
+      "yt": "MVCmEQSeZak"
+    },
+    {
+      "title": "Crimsonwood: Phantom Forest",
+      "yt": "JDK9B4IWxdg"
+    },
+    {
+      "title": "Kerning City: Secret Flower",
+      "yt": "C0xN8QcxqXk"
+    },
+    {
+      "title": "Coke Town",
+      "yt": "AfsNt5oZrqw"
+    },
+    {
+      "title": "El Nath: Wolf Wood",
+      "yt": "1MPBnVU8_I4"
+    },
+    {
+      "title": "Leafre: Dragon Load",
+      "yt": "z3jhg8KffPI"
+    },
+    {
+      "title": "Kerning Square Subway",
+      "yt": "iRxal9QpFb8"
+    },
+    {
+      "title": "Ellin Forest: Poison Forest",
+      "yt": "tc61Xjl4_X8"
+    },
+    {
+      "title": "Zakum: Final Fight",
+      "yt": "rEtDrkAYs68"
+    },
+    {
+      "title": "Ludibrium: Waltz for Work",
+      "yt": "CNRFWEhv_Dw"
+    },
+    {
+      "title": "Ludibrium: Bizarre Tales",
+      "yt": "v187PexfsFM"
+    },
+    {
+      "title": "Ninja Castle: Castle Inside",
+      "yt": "8bvx6bZ8WnA"
+    },
+    {
+      "title": "Crimsonwood: Grandmaster's Gauntlet",
+      "yt": "rsASgHchliQ"
+    },
+    {
+      "title": "Omega Sector: Let's Hunt Aliens",
+      "yt": "pZ6Fuv6BLx4"
+    },
+    {
+      "title": "Interior of Nautilus",
+      "yt": "eZ8LtJlzvyU"
+    },
+    {
+      "title": "Henesys: Go Picnic",
+      "yt": "WUuawkZR0s0"
+    },
+    {
+      "title": "Omega Sector: Finding Forest",
+      "yt": "dT0laG5urcc"
+    },
+    {
+      "title": "Cash Shop",
+      "yt": "4COWF5TAciY"
+    },
+    {
+      "title": "Perion: Ancient Remains",
+      "yt": "fdoT7nTWMO8"
+    },
+    {
+      "title": "China: Shanghai Field",
+      "yt": "by7VRYj4HU4"
+    },
+    {
+      "title": "Aqua Cave",
+      "yt": "ctsqJ-Xl9_0"
+    },
+    {
+      "title": "Eregos",
+      "yt": "rNnYpo9-cRw"
+    },
+    {
+      "title": "Crimsonwood Keep",
+      "yt": "CZoYt7HHSik"
+    },
+    {
+      "title": "Perion: Highland Star",
+      "yt": "DIuiKBGxPLA"
+    },
+    {
+      "title": "Nett's Pyramid",
+      "yt": "up7ugury9zc"
+    },
+    {
+      "title": "Singapore: CBD Town",
+      "yt": "czDfxrSGea4"
+    },
+    {
+      "title": "Ludibrium: They're Menacing You",
+      "yt": "hYVoxcVK0ns"
+    },
+    {
+      "title": "Leafre: Cave of Horntail",
+      "yt": "Lo59n_tMGSM"
+    },
+    {
+      "title": "Malaysia: Kuala Lumpur",
+      "yt": "aJNseQp1Tb4"
+    },
+    {
+      "title": "Ninja Castle: Castle Boss",
+      "yt": "_mSoAfONu6U"
+    },
+    {
+      "title": "Malaysia: Highland",
+      "yt": "gNafzBfyoTo"
+    },
+    {
+      "title": "Neo City: Midnight Harbor / Neo Tokyo: Odaiba",
+      "yt": "KO8911CzgMU"
+    },
+    {
+      "title": "Neo City: Average Town / Neo Tokyo: Park",
+      "yt": "HDsv0jH1RzI"
+    },
+    {
+      "title": "Herb Town: Pirate",
+      "yt": "bI9xLsAjeJk"
+    },
+    {
+      "title": "Rien: Bamboo Gym",
+      "yt": "9HiJnsISD3s"
+    },
+    {
+      "title": "Floating Market: Thai Town",
+      "yt": "2sJP_wp2pBg"
+    },
+    {
+      "title": "Zakum: Welcome to Hell",
+      "yt": "3EJFx4emHyk"
+    },
+    {
+      "title": "Haunted House",
+      "yt": "nbGQyrGizRQ"
+    },
+    {
+      "title": "Happyville: White Christmas (MapleSEA Version)",
+      "yt": "zAqyNzqqgT0"
+    },
+    {
+      "title": "Elfwood",
+      "yt": "uBUfQcIhim0"
+    },
+    {
+      "title": "El Nath: Abandoned Mine",
+      "yt": "WmHOENuKkmk"
+    },
+    {
+      "title": "Ghost Ship (PQ)",
+      "yt": "30PL_lLEBxU"
+    },
+    {
+      "title": "Singapore: Boat Quay Field",
+      "yt": "DLdRypTOm0o"
+    },
+    {
+      "title": "Omega Sector: For the Glory",
+      "yt": "aSTjTjakW8s"
+    },
+    {
+      "title": "New Leaf City: Upbeat",
+      "yt": "d0kE_pLlE2U"
+    },
+    {
+      "title": "Showa: Hana",
+      "yt": "1nj0TXt_23c"
+    },
+    {
+      "title": "Ninja Castle: Castle Trap",
+      "yt": "c310tdhrwtk"
+    },
+    {
+      "title": "The Third Flight",
+      "yt": "-p8DLhGML6g"
+    },
+    {
+      "title": "New Leaf City: Hunt",
+      "yt": "UB_Dn0LCYLE"
+    },
+    {
+      "title": "Neo City: Bombed City Center / Neo Tokyo: Akihabara",
+      "yt": "47hrhA3OqkU"
+    },
+    {
+      "title": "Orbis: Plot of Pixie",
+      "yt": "znPiUenHhP4"
+    },
+    {
+      "title": "Mushroom Shrine: Bizarre Forest",
+      "yt": "9kmYUElcL_w"
+    },
+    {
+      "title": "Neo City: Dangerous Tower / Neo Tokyo: Office",
+      "yt": "nxtdTBejXRY"
+    },
+    {
+      "title": "Floating Market: Thai Field",
+      "yt": "g1aZRs_r2nA"
+    },
+    {
+      "title": "El Nath: Hell Gate",
+      "yt": "923LpjaA9Ps"
+    },
+    {
+      "title": "Crimsonwood Keep Party Quest",
+      "yt": "xfq61ugRGBo"
+    },
+    {
+      "title": "Congratulations!",
+      "yt": "-ZZXlwRvUyA"
+    },
+    {
+      "title": "Leafre: Dragon Rider",
+      "yt": "s6zoD2gnYrA"
+    },
+    {
+      "title": "Kerning City: Play with Me",
+      "yt": "3Wwk2CDkV44"
+    },
+    {
+      "title": "Kecon",
+      "yt": "3fVO9GWfILs"
+    },
+    {
+      "title": "Neo Tokyo: Shibuya & Roppongi Mall / Rockbongi 2",
+      "yt": "ygZRlNsI0u8"
+    },
+    {
+      "title": "Black Wing",
+      "yt": "D567gGNSf8I"
+    },
+    {
+      "title": "Crimsonwood: Bigfoot",
+      "yt": "X0pUdlLwIhA"
+    },
+    {
+      "title": "El Nath: Mine Quest",
+      "yt": "8LaAGZ5kxvk"
+    },
+    {
+      "title": "Singapore: Ulu Field",
+      "yt": "JIriGe2tdeA"
+    },
+    {
+      "title": "Perion: Castle Ruins",
+      "yt": "xeks7rE2m0o"
+    },
+    {
+      "title": "Mount Song Town",
+      "yt": "5BcEzWb5ycg"
+    },
+    {
+      "title": "Wolf and Sheep",
+      "yt": "odEQ8ImOfeY"
+    },
+    {
+      "title": "Funny Rabbit",
+      "yt": "rfM5oalkRDI"
+    },
+    {
+      "title": "Mu Lung Dojo 4",
+      "yt": "44UN_MwwAEg"
+    },
+    {
+      "title": "Ariant: Fight Sand",
+      "yt": "RQ35yqS4XZg"
+    },
+    {
+      "title": "Golden Temple Town",
+      "yt": "Y_cihkgxF9A"
+    },
+    {
+      "title": "Wizet Logo",
+      "yt": "gP_nqrfimxU"
+    },
+    {
+      "title": "Under the Subway",
+      "yt": "T-JvjxgfFWo"
+    },
+    {
+      "title": "Mount Song: Shaolin Mountains",
+      "yt": "RE-3HU4wvdU"
+    },
+    {
+      "title": "Ludibrium: Dark Shadow",
+      "yt": "wWB1hTbtoNQ"
+    },
+    {
+      "title": "Showa: Bathroom",
+      "yt": "yRrCGa54Vbo"
+    },
+    {
+      "title": "Mu Lung Dojo 1",
+      "yt": "bqR0o6TkkQk"
+    },
+    {
+      "title": "Ariant: Burning Road",
+      "yt": "dPK41O2-odk"
+    },
+    {
+      "title": "Witch Tower",
+      "yt": "LF0hEPFskQk"
+    },
+    {
+      "title": "Mu Lung Dojo 2",
+      "yt": "cypwlFD2TE4"
+    },
+    {
+      "title": "Neo Tokyo: Shibuya & Roppongi Mall / Rockbongi 1",
+      "yt": "CFUHMREh1NU"
+    },
+    {
+      "title": "Singapore: Ghost Ship",
+      "yt": "cOatjxHHAEw"
+    },
+    {
+      "title": "Ereve: Drill Hall",
+      "yt": "uu55XbbIjRU"
+    },
+    {
+      "title": "Shaolin Temple: Great Hall of the Grand Sage",
+      "yt": "3Ers8eclp4A"
+    },
+    {
+      "title": "English School",
+      "yt": "xNZehZM4N8o"
+    },
+    {
+      "title": "Shaolin Temple: Sutra Depository",
+      "yt": "hapVbhzQF88"
+    },
+    {
+      "title": "Chata x Oster Project -- Nanaironosekai",
+      "yt": "qM6ExgTX1KM"
+    },
+    {
+      "title": "Amoria: Chapel",
+      "yt": "NJ6UMbOgQjU"
+    },
+    {
+      "title": "Yu Garden: Yuyuan",
+      "yt": "i4KaMvnTNww"
+    },
+    {
+      "title": "Golden Temple Field",
+      "yt": "NQPeBpjEYrs"
+    },
+    {
+      "title": "Crimsonwood: Courtyard",
+      "yt": "h0_8MftVy90"
+    },
+    {
+      "title": "PvP",
+      "yt": "0cqwe6XD7GI"
+    },
+    {
+      "title": "Mu Lung Dojo 3",
+      "yt": "9SKZBsjUdAg"
+    },
+    {
+      "title": "Cake Map (4th Anniversary)",
+      "yt": "91hJqJZypsM"
+    },
+    {
+      "title": "Morning Shot",
+      "yt": "He-cxSXHS8A"
+    },
+    {
+      "title": "Nexon Logo",
+      "yt": "xgQdq4awens"
+    },
+    {
+      "title": "Golden Temple Dungeon",
+      "yt": "VoHtZ3sKsOY"
+    },
+    {
+      "title": "Cake Map",
+      "yt": "Dtvumci8eA0"
+    },
+    {
+      "title": "Feel Good",
+      "yt": "Toxr3wrvQm8"
+    },
+    {
+      "title": "Funny Rabbit (Faster)",
+      "yt": "43UmtCfYn54"
+    },
+    {
+      "title": "Mikuni Shimokawa -- Memories of MapleStory",
+      "yt": "VLZsjH3fr70"
+    },
+    {
+      "title": "Amoria: Cathedral",
+      "yt": "uqBUXZdBvVU"
+    },
+    {
+      "title": "Where The Balrog's From",
+      "yt": "OC-b2p-D28s"
+    },
+    {
+      "title": "WC Select",
+      "yt": "jUkjEGFwN1A"
+    },
+    {
+      "title": "Shaolin Temple: Sutra Boss",
+      "yt": "gLrpmQPp9U8"
+    },
+    {
+      "title": "Nexon America Logo",
+      "yt": "IUnEmjvparM"
+    },
+    {
+      "title": "Haruka Shimotsuki -- Hajimarino Story",
+      "yt": "KYVcqLAJJ6U"
+    },
+    {
+      "title": "Heat Up",
+      "yt": "fFPEeCpJ1I4"
+    },
+    {
+      "title": "Jimang -- Sakura Pop",
+      "yt": "toyGN6s7-S8"
+    },
+    {
+      "title": "Summer Boating 1",
+      "yt": "1h8ZJhL7GqQ"
+    },
+    {
+      "title": "Hearty Bear (Effect)",
+      "yt": "vOCecaxisgE"
+    },
+    {
+      "title": "Euphonius -- Divinity",
+      "yt": "3L9fhgu2kDI"
+    },
+    {
+      "title": "Summer Boating 3",
+      "yt": "kiXwuRCn3zo"
+    },
+    {
+      "title": "The Aftermath",
+      "yt": "3fm6C-FyoRQ"
+    },
+    {
+      "title": "Pachinko Interior Ambience",
+      "yt": "NJo_TrTWIa4"
+    },
+    {
+      "title": "Summer Boating 2",
+      "yt": "IPokl8jGHcg"
+    },
+    {
+      "title": "Asiasoft Logo",
+      "yt": "2WWEkxSNljM"
+    }
+  ]
 }

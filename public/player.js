@@ -1,7 +1,7 @@
 /* 背景音樂小播放器（右下角）。用法：MusicPlayer.set({ title, yt?, src? }) ＝ 設定「預設曲」（通常是角色專屬配樂）
    - yt：YouTube 影片網址或 ID，用官方嵌入播放器（IFrame API）。可展開面板看影片（嵌入規範要求播放器要看得見）
    - src：自己的音檔路徑（本機用）。沒有 yt 時才使用；檔案載入失敗會自動隱藏播放器
-   - 曲庫：config.json 的 musicLibrary［{title, yt}］。☰ 開啟曲目清單（可搜尋），訪客自己選歌；選過之後換角色不會被蓋掉，清單頂端可「跟隨角色預設」
+   - 曲庫：config.json 的 musicLibrary（中文）與 musicLibraryEn（英文）［{title, yt}］，清單內分兩區，上下首只在同區輪播。☰ 開啟曲目清單（可搜尋），訪客自己選歌；選過之後換角色不會被蓋掉，清單頂端可「跟隨角色預設」
    - 播放模式（🔁 全部循環／🔂 單曲循環／🔀 隨機）：曲末自動接下一首，可以一直播；影片無法嵌入時自動跳下一首
    - 瀏覽器不允許自動出聲：第一次點擊頁面任何地方才會開始播放；按暫停後會記住，不再自動播放
    - 音量、暫停偏好、模式、所選歌曲、播放進度存在 localStorage */
@@ -43,6 +43,7 @@
   .bgm .lst li.cur button{background:color-mix(in srgb,var(--accent,#4de1ff) 22%,transparent);font-weight:700}
   .bgm .lst li i{font-style:normal;opacity:.5;min-width:2.2em;text-align:right;flex:none}
   .bgm .lst li.rst button{opacity:.8;border-bottom:1px solid var(--line,var(--panel-b,#2a3350));border-radius:8px 8px 0 0}
+  .bgm .lst li.sec{position:sticky;top:0;padding:6px 10px 4px;font-size:.75rem;font-weight:700;letter-spacing:.08em;opacity:.65;background:color-mix(in srgb,var(--card,var(--panel,#151a28)) 96%,transparent)}
   .bgm .lst .none{padding:10px 16px;opacity:.6}
   @media(max-width:520px){.bgm input[type=range],.bgm .t small{display:none}.bgm .t b{max-width:5em}.bgm .ctl{gap:6px;padding:6px 10px 6px 6px}.bgm .tg{width:28px;height:28px}.bgm .pp{width:38px;height:38px}}`;
   const st = document.createElement('style'); st.textContent = css; document.head.append(st);
@@ -153,18 +154,22 @@
     if (autoplay) { started = true; LS.set('bgm_on', '1'); }
     renderList(); ui();
   }
+  // 上一首／下一首／隨機只在目前這首所屬的歌單（中文或英文）內輪播；預設曲不在曲庫時視為中文歌單
   function pickNext(dir) {
-    if (!lib.length) return track && track.key;
+    const cur = lib.find((x) => x.id === (track && track.key));
+    const pool = lib.filter((x) => x.g === (cur ? cur.g : 0));
+    if (!pool.length) return track && track.key;
     if (mode === 'shuffle' && dir > 0) {
-      if (lib.length === 1) return lib[0].id;
-      let n; do { n = lib[Math.floor(Math.random() * lib.length)].id; } while (n === track.key);
+      if (pool.length === 1) return pool[0].id;
+      let n; do { n = pool[Math.floor(Math.random() * pool.length)].id; } while (n === track.key);
       return n;
     }
+    const i = pool.findIndex((x) => x.id === (track && track.key));
     if (dir < 0) {
       if (mode === 'shuffle' && history.length) return history.pop();
-      const i = idx(); return lib[(i <= 0 ? lib.length : i) - 1].id;
+      return pool[(i <= 0 ? pool.length : i) - 1].id;
     }
-    const i = idx(); return lib[(i + 1) % lib.length].id;
+    return pool[(i + 1) % pool.length].id;
   }
   const step = (dir) => {
     const was = history.length;
@@ -190,8 +195,12 @@
     const q = search.value.trim().toLowerCase();
     const rows = lib.map((x, i) => [x, i]).filter(([x]) => !q || x.title.toLowerCase().includes(q));
     const follow = !LS.get('bgm_cur', '');
+    const GN = ['中文歌單', '英文歌單'];
+    let lastG = -1;
+    const row = ([x, i]) => (x.g !== lastG ? (lastG = x.g, `<li class="sec">${GN[x.g]}</li>`) : '')
+      + `<li class="${track && track.key === x.id ? 'cur' : ''}"><button type="button" data-i="${i}"><i>${i + 1}</i><span>${esc(x.title)}</span></button></li>`;
     ul.innerHTML = (defTrack && !q ? `<li class="rst${follow ? ' cur' : ''}"><button type="button" data-f="1">↺ 跟隨角色預設（${esc(titleOf(defTrack.id))}）</button></li>` : '')
-      + (rows.length ? rows.map(([x, i]) => `<li class="${track && track.key === x.id ? 'cur' : ''}"><button type="button" data-i="${i}"><i>${i + 1}</i><span>${esc(x.title)}</span></button></li>`).join('')
+      + (rows.length ? rows.map(row).join('')
         : '<li class="none">找不到符合的曲目</li>');
   }
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -204,7 +213,8 @@
 
   // 曲庫來自 config.json 的 musicLibrary（找不到就只有預設曲）
   const loadLib = () => libReady || (libReady = fetch('config.json').then((r) => r.json()).then((c) => {
-    lib = (c.musicLibrary || []).map((x) => ({ id: ytId(x.yt), title: x.title || '' })).filter((x) => x.id);
+    const conv = (a, g) => (a || []).map((x) => ({ id: ytId(x.yt), title: x.title || '', g })).filter((x) => x.id);
+    lib = conv(c.musicLibrary, 0).concat(conv(c.musicLibraryEn, 1));
   }).catch(() => {}));
 
   window.MusicPlayer = {
