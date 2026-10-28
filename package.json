@@ -1,0 +1,27 @@
+{
+  "name": "tms-ms",
+  "version": "1.0.0",
+  "description": "TMS 角色網站",
+  "main": "fetch-data.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerry900529/MS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/jerry900529/MS/issues"
+  },
+  "homepage": "https://github.com/jerry900529/MS#readme",
+  "private": true,
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  }
+}

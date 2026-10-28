@@ -3,6 +3,7 @@
 //   1. Cloudflare Worker（部署後金鑰放在 Worker 的 Secret，不會出現在網頁／repo）
 //   2. 本機 server.js 的 /api/lookup（node server.js 測試用）
 // 純 ES module、不依賴套件。ENDPOINTS 要和 fetch-data.js 的保持一致（但不抓歷史經驗，省額度）
+import { mcp } from './mcp.mjs';
 const BASE = 'https://open.api.nexon.com/maplestorytw/v1';
 const ENDPOINTS = {
   basic: '/character/basic', stat: '/character/stat', equip: '/character/item-equipment', popularity: '/character/popularity',
@@ -70,6 +71,13 @@ const json = (body, status, cors) => new Response(JSON.stringify(body), { status
 
 export default {
   async fetch(req, env, ctx) {
+    const m = await mcp(req, env, ctx, { run, NAME_RE }); // /mcp/<MCP_PATH>：給 claude.ai 連結器用，見 mcp.mjs
+    if (m) return m;
+    const icon = new URL(req.url).pathname; // 連結器圖示：claude.ai 會抓網域根目錄的 favicon，轉送網站現有的圖
+    if (icon === '/favicon.ico' || icon === '/favicon.png') {
+      const r = await fetch(`https://jerry900529.github.io/MS${icon}`, { cf: { cacheTtl: 86400 } });
+      return new Response(r.body, { status: r.status, headers: { 'content-type': r.headers.get('content-type') || 'image/png', 'cache-control': 'public, max-age=86400' } });
+    }
     const origin = req.headers.get('origin') || '';
     const allow = (env.ALLOW_ORIGIN || 'https://jerry900529.github.io').split(',').map((s) => s.trim());
     const cors = allow.includes(origin) ? { 'access-control-allow-origin': origin, vary: 'origin' } : { vary: 'origin' };
